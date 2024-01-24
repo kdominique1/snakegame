@@ -1,6 +1,7 @@
 import "./App.css";
 import "./App.css";
 import Snake from "./Snake";
+import WorldModel from "./WorldModel";
 import display from "./display";
 import { useEffect } from "react";
 
@@ -12,14 +13,16 @@ export default function App() {
     display("hey");
     const greenSnake = new Snake();
     const brownSnake = new Snake();
-    greenSnake.turn();
+    // Step 8: Create new snake and new world model and pass the snake to the world model
+    const redSnake = new Snake();
+    const worldModel1 = new WorldModel(redSnake);
     greenSnake.move(1);
     greenSnake.move(2);
     brownSnake.move(1);
-    brownSnake.turn();
-    brownSnake.turn();
+    worldModel1.updateSteps(1);
     display("Green snake's current position is: " + greenSnake.position);
     display("Brown snake's current position is: " + brownSnake.position);
+    display("Red snake's current position is: " + redSnake.position);
   }, []);
   return (
     <div className="App">

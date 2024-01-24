@@ -1,10 +1,11 @@
-// import Snake from "./Snake";
+import Snake from "./Snake";
 
-/*
+
 const moveSnakes = (times: number, turn: boolean = false) => {
-  const greenSnake = new Snake("green");
-  const maroonSnake = new Snake("maroon");
-  let totalSquares = 0;
+  const greenSnake = new Snake();
+  const maroonSnake = new Snake();
+  let totalSquaresX = 0;
+  let totalSquaresY = 0;
 
   for (let i = 0; i < times; i++) {
     const numSquares1 = Math.floor(Math.random() * 100);
@@ -12,24 +13,26 @@ const moveSnakes = (times: number, turn: boolean = false) => {
     greenSnake.move(numSquares1);
     maroonSnake.move(numSquares2);
     greenSnake.move(5);
-    totalSquares += numSquares2;
+    totalSquaresX += numSquares2;
     if (turn) {
       const numSquares3 = Math.floor(Math.random() * 100);
       const numSquares4 = Math.floor(Math.random() * 10);
+      // Fix turn
       greenSnake.turn();
       maroonSnake.turn();
       maroonSnake.move(numSquares3);
-      totalSquares -= numSquares3;
+      totalSquaresX -= numSquares3;
       greenSnake.move(numSquares3);
+      // Fix turn
       maroonSnake.turn();
       maroonSnake.turn();
       maroonSnake.turn();
       maroonSnake.move(numSquares4);
-      totalSquares += numSquares4;
+      totalSquaresX += numSquares4;
     }
   }
 
-  return { actual: maroonSnake.position, expected: totalSquares };
+  return { actual: maroonSnake.position, expected: [totalSquaresX, totalSquaresY]};
 };
 
 describe("Snake Tests", function () {
@@ -44,11 +47,11 @@ describe("Snake Tests", function () {
 
   testDescriptions.forEach((description, index) => {
     it(description, () =>
-      expect(tests[index].expected).toBe(tests[index].actual),
+      expect(tests[index].actual).toMatchObject(tests[index].expected),
     );
   });
 });
-*/
+
 
 describe("Addition", function () {
   it("sums numbers", () => {
