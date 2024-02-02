@@ -1,38 +1,26 @@
 import Snake from "./Snake";
+import Point from "./Point";
 
 
 const moveSnakes = (times: number, turn: boolean = false) => {
-  const greenSnake = new Snake();
   const maroonSnake = new Snake();
-  let totalSquaresX = 0;
-  let totalSquaresY = 0;
+  let totalXCoordMaroon = 0;
+  let totalYCoordMaroon = 0
 
   for (let i = 0; i < times; i++) {
     const numSquares1 = Math.floor(Math.random() * 100);
     const numSquares2 = Math.floor(Math.random() * 100);
-    greenSnake.move(numSquares1);
+    maroonSnake.move(numSquares1);
+    totalXCoordMaroon += numSquares1;
+    maroonSnake.turnLeft();
     maroonSnake.move(numSquares2);
-    greenSnake.move(5);
-    totalSquaresX += numSquares2;
-    if (turn) {
-      const numSquares3 = Math.floor(Math.random() * 100);
-      const numSquares4 = Math.floor(Math.random() * 10);
-      // Fix turn
-      greenSnake.turn();
-      maroonSnake.turn();
-      maroonSnake.move(numSquares3);
-      totalSquaresX -= numSquares3;
-      greenSnake.move(numSquares3);
-      // Fix turn
-      maroonSnake.turn();
-      maroonSnake.turn();
-      maroonSnake.turn();
-      maroonSnake.move(numSquares4);
-      totalSquaresX += numSquares4;
-    }
+    totalYCoordMaroon += numSquares2;
+    maroonSnake.turnRight();
+    maroonSnake.move(numSquares1);
+    totalXCoordMaroon += numSquares1;
   }
 
-  return { actual: maroonSnake.position, expected: [totalSquaresX, totalSquaresY]};
+  return { actual: maroonSnake.position, expected: [totalXCoordMaroon, totalYCoordMaroon]};
 };
 
 describe("Snake Tests", function () {

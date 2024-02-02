@@ -1,70 +1,70 @@
 import display from "./display";
 import Point from "./Point";
 
-// place your code on line 5 above the export statement below
-
+/** Class representing a snake. */
 class Snake {
   private currentPosition: Point;
   private currentDirection: number;
+  /**
+   * Creates a snake with position coordinates (0,0) and a starting direction of 1 (right).
+   */
   constructor() {
-    // Step 2: Set location to Point with x and y coords of 0
     this.currentPosition = new Point(0, 0);
     this.currentDirection = 1;
   }
-  // Step 4: Modify move method
+
+  /**
+  Moves the snake in its current direction the given number of spaces.
+  @param spaces - the number of spaces to move the snake.
+ */
+  
   move(spaces: number) {
     if (this.currentDirection === 1) {
-      // right
       this.currentPosition = new Point(this.currentPosition.x + spaces, this.currentPosition.y
       );
     } else if (this.currentDirection === 2) {
-      // down
       this.currentPosition = new Point(this.currentPosition.x, this.currentPosition.y - spaces)
     } else if (this.currentDirection === -1) {
-      // left
       this.currentPosition = new Point(this.currentPosition.x - spaces, this.currentPosition.y)
     } else {
-      // up
       this.currentPosition = new Point(this.currentPosition.x, this.currentPosition.y + spaces)
     }
   }
 
-  // Step 3: Add turnRight and turnLeft methods and mark old turn method as deprecated
+  /**
+  Turns the snake to the right from its current direction.
+ */
 
   turnRight() {
     if (this.currentDirection === 1) {
-      // facing right
-      this.currentDirection = 2; // facing down
+      this.currentDirection = 2;
     } else if (this.currentDirection === 2) {
-      // facing down
-      this.currentDirection = -1; // facing left
+      this.currentDirection = -1;
     } else if (this.currentDirection === -1) {
-      // facing left
-      this.currentDirection = 0; // facing up
+      this.currentDirection = 0;
     } else {
-      // facing up
-      this.currentDirection = 1; // facing right
-    }
-  }
-
-  turnLeft() {
-    if (this.currentDirection === 1) {
-      // facing right
-      this.currentDirection = 0; // facing up
-    } else if (this.currentDirection === 0) {
-      // facing up
-      this.currentDirection = -1; // facing left
-    } else if (this.currentDirection === -1)
-      // facing left
-      this.currentDirection = 2; // facing down
-    else {
-      // facing down
-      this.currentDirection = 1; // facing right
+      this.currentDirection = 1;
     }
   }
 
   /**
-   * @deprecated Use {@link turnRight/turnLeft} instead.
+  Turns the snake to the left from its current direction.
+ */ 
+
+  turnLeft() {
+    if (this.currentDirection === 1) {
+      this.currentDirection = 0; 
+    } else if (this.currentDirection === 0) {
+      this.currentDirection = -1; 
+    } else if (this.currentDirection === -1)
+      this.currentDirection = 2; 
+    else {
+      this.currentDirection = 1; 
+    }
+  }
+
+  /**
+   * @deprecated Use {@link turnRight} or {@link turnLeft} instead.
    */
   turn() {
     if (this.currentDirection === 1) {
@@ -74,8 +74,12 @@ class Snake {
     }
   }
 
+/**
+Returns the snake's current position coordinates as an array.
+ */
   public get position() {
     return [this.currentPosition.x, this.currentPosition.y];
 }
 }
+
 export default Snake;

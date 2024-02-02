@@ -1,18 +1,24 @@
 import Snake from "./Snake";
-// Step 5: Implement worldModel class
+/** Class representing a world model. */
 class WorldModel {
-
-    // Step 5: Create snake outside of the class and pass it to the constructor to make an aggregation
+    /**
+    Creates a new world model that is an aggregation of a snake by passing the snake as an argument.
+    @param snake - The snake for the world model.
+    */
     constructor(private snake: Snake) {
     };
 
-    // Step 6: Add method updateSteps
+    /** 
+    Updates the steps the snake has moved using the move method of the snake class.
+    @param steps - The number of steps for the snake to move.
+     */
     updateSteps(steps: number) {
-        // Call snake's move method and pass the argument of steps
         this.snake.move(steps);
     }
 
-    // Step 6: Create getter to get the snake so its position can be accessed later
+    /** 
+    Returns the world model's snake.
+    */
     public get worldSnake() {
         return this.snake;
 }
