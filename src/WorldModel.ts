@@ -1,11 +1,16 @@
 import Snake from "./Snake";
 /** Class representing a world model. */
 class WorldModel {
+
+    private width: number;
+    private height: number; 
     /**
     Creates a new world model that is an aggregation of a snake by passing the snake as an argument.
     @param snake - The snake for the world model.
     */
     constructor(private snake: Snake) {
+        this.width = 100;
+        this.height = 100;
     };
 
     /** 
@@ -22,6 +27,14 @@ class WorldModel {
     public get worldSnake() {
         return this.snake;
 }
+
+    public get worldWidth() {
+        return this.width;
+    }
+
+    public get worldHeight() {
+        return this.height;
+    }
 
 }
 

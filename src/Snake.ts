@@ -80,6 +80,10 @@ Returns the snake's current position coordinates as an array.
   public get position() {
     return [this.currentPosition.x, this.currentPosition.y];
 }
+
+  public get direction() {
+    return this.currentDirection;
+  }
 }
 
 export default Snake;
