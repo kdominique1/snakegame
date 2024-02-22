@@ -94,6 +94,16 @@ Returns the snake's current position coordinates as an array.
     return this.currentPosition.toString();
   }
 
+  public get positionX() {
+  // Change to Point object using toString method
+    return this.currentPosition.x;
+  }
+
+  public get positionY() {
+  // Change to Point object using toString method
+    return this.currentPosition.y;
+  }
+
   public get direction() {
     return this.currentDirection;
   }

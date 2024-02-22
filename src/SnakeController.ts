@@ -17,6 +17,14 @@ class SnakeController {
         return this.slitherer.position;
     }
 
+    public get snakePositionX() {
+        return this.slitherer.positionX;
+    }
+
+    public get snakePositionY() {
+        return this.slitherer.positionY;
+    }
+
     public get snakeDirection() {
         return this.slitherer.direction;
     }

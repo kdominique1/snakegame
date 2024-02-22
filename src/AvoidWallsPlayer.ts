@@ -7,7 +7,7 @@ class AvoidWallsPlayer extends Player {
     }
 
     makeTurn() {
-        if (this.sc.snakeDirection === -1) {
+        if (this.sc.snakeDirection === -1 && this.sc.snakePositionX == 0 ) {
             this.sc.turnSnakeLeft();
         }
     }
