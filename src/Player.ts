@@ -1,7 +1,7 @@
 import SnakeController from "./SnakeController";
 
 abstract class Player {
-    constructor(private sc: SnakeController) {
+    constructor(public sc: SnakeController) {
 }
 
     abstract makeTurn(): void;

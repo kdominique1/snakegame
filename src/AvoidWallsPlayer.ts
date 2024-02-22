@@ -1,12 +1,13 @@
 import Player from "./Player";
+import SnakeController from "./SnakeController";
 
 class AvoidWallsPlayer extends Player {
-    constructor(private sc) {
+    constructor(public sc: SnakeController) {
         super(sc);
     }
 
     makeTurn() {
-        if (this.sc.snakeDirection === -1 and this.sc.slitherer.) {
+        if (this.sc.snakeDirection === -1) {
             this.sc.turnSnakeLeft();
         }
     }
