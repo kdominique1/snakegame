@@ -24,9 +24,9 @@ class WorldModel {
     /** 
     Returns the world model's snake.
     */
-    public get worldSnake() {
+    public get _snake() {
         return this.snake;
-}
+    }
 
     public get worldWidth() {
         return this.width;

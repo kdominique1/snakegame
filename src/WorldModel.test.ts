@@ -11,12 +11,12 @@ const updateNumOfSteps = (times: number) => {
     const numOfSteps = Math.floor(Math.random() * 100);
     worldModelOne.updateSteps(numOfSteps);
     totalNumOfSteps = new Point(totalNumOfSteps.x + numOfSteps, totalNumOfSteps.y);
-    worldModelOne.worldSnake.turnLeft();
+    worldModelOne._snake.turnLeft();
     worldModelOne.updateSteps(numOfSteps);
     totalNumOfSteps = new Point(totalNumOfSteps.x, totalNumOfSteps.y + numOfSteps)
   }; 
 
-  return { actual: worldModelOne.worldSnake.position, expected: [totalNumOfSteps.x, totalNumOfSteps.y]};
+  return { actual: worldModelOne._snake.position, expected: `${ totalNumOfSteps.x }, ${ totalNumOfSteps.y }`};
 };
 
 describe("WorldModel Tests", function () {
@@ -30,7 +30,7 @@ describe("WorldModel Tests", function () {
 
   testDescriptions.forEach((description, index) => {
     it(description, () => 
-      expect(tests[index].actual).toMatchObject(tests[index].expected),
+      expect(tests[index].actual).toBe(tests[index].expected),
     );
   });
 });

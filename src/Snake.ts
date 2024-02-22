@@ -90,8 +90,9 @@ class Snake {
 Returns the snake's current position coordinates as an array.
  */
   public get position() {
-    return [this.currentPosition.x, this.currentPosition.y];
-}
+  // Change to Point object using toString method
+    return this.currentPosition.toString();
+  }
 
   public get direction() {
     return this.currentDirection;

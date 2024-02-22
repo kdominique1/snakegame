@@ -20,7 +20,7 @@ const moveSnakes = (times: number, turn: boolean = false) => {
     totalXCoordMaroon += numSquares1;
   }
 
-  return { actual: maroonSnake.position, expected: [totalXCoordMaroon, totalYCoordMaroon]};
+  return { actual: maroonSnake.position, expected: `${ totalXCoordMaroon }, ${ totalYCoordMaroon }`};
 };
 
 describe("Snake Tests", function () {
@@ -35,7 +35,7 @@ describe("Snake Tests", function () {
 
   testDescriptions.forEach((description, index) => {
     it(description, () =>
-      expect(tests[index].actual).toMatchObject(tests[index].expected),
+      expect(tests[index].actual).toBe(tests[index].expected),
     );
   });
 });

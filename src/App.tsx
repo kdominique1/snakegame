@@ -18,7 +18,7 @@ export default function App() {
     worldModel1.updateSteps(3);
     display("Green snake's current position is: " + greenSnake.position);
     display("Brown snake's current position is: " + brownSnake.position);
-    display("Red snake's current position is: " + worldModel1.worldSnake.position);
+    display("Red snake's current position is: " + worldModel1._snake.position);
   }, []);
   return (
     <div className="App">
