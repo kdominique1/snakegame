@@ -29,6 +29,10 @@ class SnakeController {
         return this.slitherer.direction;
     }
 
+    public get worldModel_ () {
+        return this.snakeWorld;
+    }
+
 };
 
 export default SnakeController;

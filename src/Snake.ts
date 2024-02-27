@@ -38,7 +38,7 @@ class Snake {
   /**
   Turns the snake to the right from its current direction.
  */
-
+  // Change numbers to be easier to understand which direction is which
   turnRight() {
     if (this.currentDirection === 1) {
       // facing right
