@@ -25,6 +25,7 @@ class Snake {
       );
     } else if (this.currentDirection === 2) {
     // Down
+    // Change numbers
       this.currentPosition = new Point(this.currentPosition.x, this.currentPosition.y - spaces)
     } else if (this.currentDirection === -1) {
     // Left
@@ -89,12 +90,13 @@ class Snake {
 /**
 Returns the snake's current position coordinates as an array.
  */
-  public get position() {
+  public get position(): Point {
   // Change to Point object using toString method
-    return this.currentPosition.toString();
+    return this.currentPosition;
   }
 
   public get positionX() {
+  // These getters are unnecessary
   // Change to Point object using toString method
     return this.currentPosition.x;
   }
