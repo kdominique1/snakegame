@@ -31,11 +31,11 @@ class WorldModel {
         return this.snake_;
     }
 
-    public get width() {
+    public get width(): number {
         return this.width;
     }
 
-    public get height() {
+    public get height(): number {
         return this.height;
     }
 
