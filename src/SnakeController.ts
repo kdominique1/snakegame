@@ -1,8 +1,14 @@
 import Snake from "./Snake";
 import WorldModel from "./WorldModel";
+import Point from "./Point";
 
 class SnakeController {
-    constructor(private snakeWorld: WorldModel, private slitherer: Snake) {
+    // Fix variables
+    private snakeWorld: WorldModel;
+    private slitherer: Snake;
+    constructor(sw: WorldModel, slither: Snake) {
+        this.snakeWorld = sw;
+        this.slitherer = slither;
     };
 
     turnSnakeLeft() {
@@ -13,24 +19,12 @@ class SnakeController {
         this.slitherer.turnRight();
     };
 
-    public get snakePosition() {
+    public get snakePosition(): Point {
         return this.slitherer.position;
-    }
-
-    public get snakePositionX() {
-        return this.slitherer.positionX;
-    }
-
-    public get snakePositionY() {
-        return this.slitherer.positionY;
     }
 
     public get snakeDirection() {
         return this.slitherer.direction;
-    }
-
-    public get worldModel_ () {
-        return this.snakeWorld;
     }
 
 };
