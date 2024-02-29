@@ -11,7 +11,6 @@ class AvoidWallsPlayer extends Player {
         OR if the snake's direction is down, the y-coord is less than or equal to 0, and the x-coord is less than the model width
         OR if the snake's direction is up and the y-coord is equal to or greater than the total model height and the x-coord is equal to or more than half of the world width
         */
-        // Change to get world width from snake controller directly using getter
         if ((this.sc.snakeDirection === -1 && this.sc.snakePosition.x === 0 && this.sc.snakePosition.y < this.sc.worldHeight) || (this.sc.snakeDirection === 2 && this.sc.snakePosition.y <= 0 && this.sc.snakePosition.x < this.sc.worldWidth)) {
             this.sc.turnSnakeLeft();
         }

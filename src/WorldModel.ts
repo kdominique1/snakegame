@@ -27,7 +27,7 @@ class WorldModel {
     Returns the world model's snake.
     */
     // No undeerscores on getters
-    public get snake() {
+    public get snake(): Snake {
         return this.snake_;
     }
 

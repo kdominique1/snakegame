@@ -23,15 +23,15 @@ class SnakeController {
         return this.slitherer.position;
     }
 
-    public get snakeDirection() {
+    public get snakeDirection(): number {
         return this.slitherer.direction;
     }
 
-    public get worldWidth() {
+    public get worldWidth(): number {
         return this.snakeWorld.width;
     }
 
-    public get worldHeight() {
+    public get worldHeight(): number {
         return this.snakeWorld.height;
     }
 
