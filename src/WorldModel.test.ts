@@ -16,7 +16,7 @@ const updateNumOfSteps = (times: number) => {
     totalNumOfSteps = new Point(totalNumOfSteps.x, totalNumOfSteps.y + numOfSteps)
   }; 
 
-  return { actual: worldModelOne.snake.position, expected: `${ totalNumOfSteps.x }, ${ totalNumOfSteps.y }`};
+  return { actual: worldModelOne.snake.position.toString(), expected: worldModelOne.snake.position.x + "," + worldModelOne.snake.position.y};
 };
 
 describe("WorldModel Tests", function () {

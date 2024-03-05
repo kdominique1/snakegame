@@ -28,7 +28,7 @@ class Point {
   }
 
   toString() {
-    return `${ this.xcoord }, ${ this.ycoord }`
+    return this.xcoord + "," + this.ycoord;
   }
 
 }

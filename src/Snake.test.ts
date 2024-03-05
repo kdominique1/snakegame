@@ -20,7 +20,7 @@ const moveSnakes = (times: number, turn: boolean = false) => {
     totalXCoordMaroon += numSquares1;
   }
 
-  return { actual: maroonSnake.position, expected: `${ totalXCoordMaroon }, ${ totalYCoordMaroon }`};
+  return { actual: maroonSnake.position.toString(), expected: totalXCoordMaroon + "," + totalYCoordMaroon};
 };
 
 describe("Snake Tests", function () {
