@@ -2,10 +2,17 @@ import Player from "./Player";
 import SnakeController from "./SnakeController";
 
 class AvoidWallsPlayer extends Player {
+    /**
+    Extends the player class to make a class with methods to avoid the walls.
+    @param sc - The given snake controller.
+     */
     constructor(public sc: SnakeController) {
         super(sc);
     }
 
+    /** 
+    Turns the snake left or right to avoid hitting a wall if need be. If not, the snake's direction stays the same.
+     */
     makeTurn() {
         /* If the snake's direction is left, the x-coord is 0, and the y-coord is less than half the total model height
         OR if the snake's direction is down, the y-coord is less than or equal to 0, and the x-coord is less than half the model width

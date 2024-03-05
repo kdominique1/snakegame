@@ -18,19 +18,30 @@ class SnakeController {
         this.slitherer.turnRight();
     };
 
-    // Don't need separate getters for x and y, just use the getters from the Point class
+    /**
+    Returns the position of the snake controller's snake.
+     */
     public get snakePosition(): Point {
         return this.slitherer.position;
     }
 
+    /**
+    Returns the direction of the snake controller's snake.
+     */
     public get snakeDirection(): number {
         return this.slitherer.direction;
     }
 
+    /**
+    Returns the width of the snake controller's world model.
+     */
     public get worldWidth(): number {
         return this.snakeWorld.width;
     }
 
+    /**
+    Returns the height of the snake controller's world model.
+     */
     public get worldHeight(): number {
         return this.snakeWorld.height;
     }
