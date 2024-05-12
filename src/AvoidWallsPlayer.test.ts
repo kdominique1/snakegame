@@ -29,7 +29,7 @@ describe("AvoidWallsPlayer", () => {
   // Test scenarios for turning left
   it("should turn left when snake is moving left and hits the left wall", () => {
     jest.spyOn(sc, "snakeDirection", "get").mockReturnValue(-1); // Left
-    jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(0, 25)); // Near left wall, less than half height
+    jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(0, 51)); // Near left wall, more than half height
     player.makeTurn();
     expect(sc.turnSnakeLeft).toHaveBeenCalled();
   });
@@ -80,6 +80,12 @@ describe("AvoidWallsPlayer", () => {
   it("should turn right when snake is moving left and is at the bottom-left corner", () => {
     jest.spyOn(sc, "snakeDirection", "get").mockReturnValue(-1); // Left
     jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(0, 49)); // Bottom-left corner, less than half height assuming worldHeight is 100
+
+    // Add logging to see what values are being used in the test
+    console.log("Direction:", sc.snakeDirection);
+    console.log("Position:", sc.snakePosition.x, sc.snakePosition.y);
+    console.log("World Height:", sc.worldHeight);
+
     player.makeTurn();
     expect(sc.turnSnakeRight).toHaveBeenCalled();
   });
