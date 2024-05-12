@@ -6,10 +6,19 @@ describe('AvoidWallsPlayer', () => {
     let player: AvoidWallsPlayer;
 
     beforeEach(() => {
-        sc = new SnakeController();
+        // Assuming SnakeController requires some parameters, adjust as necessary
+        sc = new SnakeController(/* required arguments */);
         player = new AvoidWallsPlayer(sc);
-        sc.worldWidth = 100; // Assuming world width
-        sc.worldHeight = 100; // Assuming world height
+
+        // Mock read-only properties
+        Object.defineProperty(sc, 'worldWidth', { value: 100, writable: true });
+        Object.defineProperty(sc, 'worldHeight', { value: 100, writable: true });
+        Object.defineProperty(sc, 'snakeDirection', { writable: true });
+        Object.defineProperty(sc, 'snakePosition', { writable: true });
+
+        // Mock methods if they are not implemented
+        jest.spyOn(sc, 'turnSnakeLeft').mockImplementation(() => {});
+        jest.spyOn(sc, 'turnSnakeRight').mockImplementation(() => {});
     });
 
     it('should turn left when snake is moving left and hits the left wall', () => {
