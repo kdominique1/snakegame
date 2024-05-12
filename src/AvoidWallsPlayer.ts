@@ -16,6 +16,7 @@ class AvoidWallsPlayer extends Player {
     makeTurn() {
         /* If the snake's direction is left, the x-coord is 0, and the y-coord is less than half the total model height
         OR if the snake's direction is down, the y-coord is less than or equal to 0, and the x-coord is less than half the model width
+        
         OR if the snake's direction is up and the y-coord is equal to or greater than the total model height and the x-coord is equal to or more than half of the world width
         OR if the snake's direction is right, the x-coord is equal to or greater than the total model width, and the y-coord is less than or equal to more than half of the world height
         */
