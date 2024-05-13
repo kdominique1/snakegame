@@ -38,11 +38,11 @@ class WorldModel {
   }
 
   public get width(): number {
-    return this.width;
+    return this.width_;
   }
 
   public get height(): number {
-    return this.height;
+    return this.height_;
   }
   /**
    * Sets the world view.

@@ -11,8 +11,8 @@ describe("AvoidWallsPlayer", () => {
   let mockWorld: WorldModel;
 
   beforeEach(() => {
-    mockSnake = new Snake(); // Assuming Snake has a suitable constructor
-    mockWorld = new WorldModel(mockSnake); // Corrected to pass only Snake
+    mockSnake = new Snake();
+    mockWorld = new WorldModel(mockSnake);
     sc = new SnakeController(mockWorld, mockSnake);
     player = new AvoidWallsPlayer(sc);
 

@@ -34,15 +34,15 @@ class CanvasWorldView implements IWorldView {
       this.worldCanvas.height,
     );
 
-    // Assuming the snake is at a fixed position for demonstration purposes
-    // Normally you would iterate over the snake's segments or position
-    const snakeSize = 3; // Example size, replace with actual snake size retrieval logic
-    const snakeWidth = snakeSize * this.scalingFactor;
-    const snakeHeight = snakeSize * this.scalingFactor;
-
     // Draw the snake
     this.context.fillStyle = "green"; // Set the color of the snake
-    this.context.fillRect(0, 0, snakeWidth, snakeHeight); // Draw the snake at the top-left corner for now
+
+    this.context.fillRect(
+      worldModel.snake.position.x * this.scalingFactor,
+      worldModel.snake.position.y * this.scalingFactor,
+      this.scalingFactor,
+      this.scalingFactor,
+    );
   }
 }
 
