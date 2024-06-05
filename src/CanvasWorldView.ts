@@ -52,6 +52,10 @@ class CanvasWorldView implements IWorldView {
   public get canvasHeight(): number {
     return this.worldCanvas.height;
   }
+
+  public get canvasContext(): CanvasRenderingContext2D {
+    return this.context;
+  }
 }
 
 export default CanvasWorldView;

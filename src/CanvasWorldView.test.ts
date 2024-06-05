@@ -1,5 +1,4 @@
 import CanvasWorldView from "../src/CanvasWorldView";
-import IWorldView from "./IWorldView";
 import WorldModel from "../src/WorldModel";
 import Snake from "../src/Snake";
 
@@ -36,7 +35,7 @@ describe("CanvasWorldView", () => {
   });
 
   it("should draw the snake at the correct position", () => {
-    snake.move(5); // Move snake right 5 spaces
+    snake.move(5);
     canvasWorldView.display(worldModel);
     const expectedX = snake.position.x * 10;
     const expectedY = snake.position.y * 10;
