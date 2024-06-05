@@ -1,4 +1,6 @@
-class LRKeyInputHandler {
+import IInputHandler from "./IInputHandler";
+
+class LRKeyInputHandler implements IInputHandler {
   private wasLeftArrowPushed: boolean;
   private wasRightArrowPushed: boolean;
 
