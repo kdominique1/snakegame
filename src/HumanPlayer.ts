@@ -11,10 +11,10 @@ class HumanPlayer {
   }
 
   makeTurn() {
-    if (this.iinputHandler.madeLeftMove === true) {
+    if (this.iinputHandler.madeLeftMove()) {
       this.snakeController.turnSnakeLeft();
       this.iinputHandler.resetLeftMove();
-    } else if (this.iinputHandler.madeRightMove === true) {
+    } else if (this.iinputHandler.madeRightMove()) {
       this.snakeController.turnSnakeRight();
       this.iinputHandler.resetRightMove();
     }
