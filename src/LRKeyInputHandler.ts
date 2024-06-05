@@ -26,11 +26,11 @@ class LRKeyInputHandler implements IInputHandler {
     this.wasRightArrowPushed = false;
   }
 
-  public get madeLeftMove(): boolean {
+  public madeLeftMove(): boolean {
     return this.wasLeftArrowPushed;
   }
 
-  public get madeRightMove(): boolean {
+  public madeRightMove(): boolean {
     return this.wasRightArrowPushed;
   }
 }

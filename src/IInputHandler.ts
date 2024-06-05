@@ -2,12 +2,12 @@ interface IInputHandler {
   /**
    * Returns true when the player inputs a left move.
    */
-  madeLeftMove(): boolean;
+  madeLeftMove: () => boolean;
 
   /**
    * Returns true when the player inputs a right move.
    */
-  madeRightMove(): boolean;
+  madeRightMove: () => boolean;
 
   /**
    * Resets when the player makes a left move.
