@@ -15,6 +15,7 @@ import AvoidWallsPlayer from "./AvoidWallsPlayer";
 export default function App() {
   useEffect(() => {
     document.getElementById("output")!.innerText = "OUTPUT:\n";
+
     const greenSnake = new Snake();
     const brownSnake = new Snake();
     const redSnake = new Snake();
