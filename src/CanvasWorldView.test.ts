@@ -36,10 +36,18 @@ describe("CanvasWorldView", () => {
 
   it("should draw the snake at the correct position", () => {
     snake.move(5);
-    canvasWorldView.display(worldModel);
-    const expectedX = snake.position.x * 10;
-    const expectedY = snake.position.y * 10;
+    // Use spyon to have the test log the actions of the method
     const fillRectSpy = jest.spyOn(canvasWorldView.canvasContext, "fillRect");
-    expect(fillRectSpy).toHaveBeenCalledWith(expectedX, expectedY, 10, 10);
+    canvasWorldView.display(worldModel);
+    const expectedX = snake.position.x * scalingFactor;
+    const expectedY = snake.position.y * scalingFactor;
+    // Check which parameters were passed to the method when called
+    expect(fillRectSpy).toHaveBeenCalledWith(
+      expectedX,
+      expectedY,
+      scalingFactor,
+      scalingFactor,
+    );
+    fillRectSpy.mockRestore();
   });
 });
