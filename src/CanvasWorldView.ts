@@ -44,6 +44,14 @@ class CanvasWorldView implements IWorldView {
       this.scalingFactor,
     );
   }
+
+  public get canvasWidth(): number {
+    return this.worldCanvas.width;
+  }
+
+  public get canvasHeight(): number {
+    return this.worldCanvas.height;
+  }
 }
 
 export default CanvasWorldView;
