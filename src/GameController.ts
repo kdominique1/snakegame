@@ -18,22 +18,19 @@ class GameController {
 
   run() {
     let lastTime = 0;
-  }
 
-  requestAnimationFrame() {
-    this.updateFrame();
-  }
-
-  updateFrame() {
-    this.player1.makeTurn();
-    this.player2.makeTurn();
-    let currentTime = performance.now();
-    let timeSinceLast = currentTime - lastTime;
-    if (timeSinceLast > 250) {
-      this.world.updateSteps(1);
-      lastTime += 250;
-    }
-    this.requestAnimationFrame();
+    const updateFrame = () => {
+      this.player1.makeTurn();
+      this.player2.makeTurn();
+      let currentTime = performance.now();
+      let timeSinceLast = currentTime - lastTime;
+      if (timeSinceLast > 250) {
+        this.world.updateSteps(1);
+        lastTime += 250;
+      }
+      requestAnimationFrame(updateFrame);
+    };
+    requestAnimationFrame(updateFrame);
   }
 }
 
