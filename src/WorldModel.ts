@@ -5,51 +5,63 @@ import IWorldView from "./IWorldView";
 class WorldModel {
   private width_: number;
   private height_: number;
-  private snake_: Snake;
-  private worldView: IWorldView | null = null;
+  private allSnakes: Snake[];
+  private allViews: IWorldView[];
 
   /**
-    Creates a new world model that is an aggregation of a snake by passing the snake as an argument.
-    @param snake - The snake for the world model.
+    Creates a new world model.
     */
-  constructor(snake: Snake) {
+  constructor() {
     this.width_ = 100;
     this.height_ = 100;
-    this.snake_ = snake;
+    this.allSnakes = [];
+    this.allViews = [];
   }
 
   /** 
-    Updates the steps the snake has moved using the move method of the snake class.
-    @param steps - The number of steps for the snake to move.
+    Updates the steps for all snakes using the move method of the snake class.
+    @param steps - The number of steps for the snakes to move.
      */
   updateSteps(steps: number) {
-    this.snake.move(steps);
-    if (this.worldView !== null) {
-      this.worldView.display(this);
-    }
+    this.allSnakes.forEach((snake) => snake.move(steps));
+    this.allViews.forEach((view) => view.display(this));
   }
 
   /** 
-    Returns the world model's snake.
+    Returns all snakes in the world model.
     */
-  // No undeerscores on getters
-  public get snake(): Snake {
-    return this.snake_;
+  public get snakes(): Snake[] {
+    return this.allSnakes;
   }
 
+  /** 
+    Returns the width of the world model.
+    */
   public get width(): number {
     return this.width_;
   }
 
+  /** 
+    Returns the height of the world model.
+    */
   public get height(): number {
     return this.height_;
   }
+
   /**
-   * Sets the world view.
-   * @param view - The IWorldView instance to set.
+   * Adds a snake to the world model.
+   * @param s - The Snake instance to add.
    */
-  public set view(view: IWorldView) {
-    this.worldView = view;
+  public addSnake(s: Snake) {
+    this.allSnakes.push(s);
+  }
+
+  /**
+   * Adds a view to the world model.
+   * @param v - The IWorldView instance to add.
+   */
+  public addView(v: IWorldView) {
+    this.allViews.push(v);
   }
 }
 
