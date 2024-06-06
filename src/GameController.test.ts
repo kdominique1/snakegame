@@ -1,6 +1,5 @@
 import GameController from "./GameController";
 import WorldModel from "./WorldModel";
-import Player from "./Player";
 import Snake from "./Snake";
 import SnakeController from "./SnakeController";
 import HumanPlayer from "./HumanPlayer";
@@ -11,19 +10,35 @@ jest.useFakeTimers();
 
 describe("GameController", () => {
   let snake1: Snake;
+  let snake2: Snake;
   let worldModel: WorldModel;
-  let player1: HumanPlayer;
-  let player2: AvoidWallsPlayer;
   let snakeController1: SnakeController;
   let snakeController2: SnakeController;
   let iinputHandler1: LRKeyInputHandler;
+  let player1: HumanPlayer;
+  let player2: AvoidWallsPlayer;
   let gameController: GameController;
 
   beforeEach(() => {
+    // Initialize the snakes
+    snake1 = new Snake();
+    snake2 = new Snake();
+
+    // Initialize the world model with snake1
     worldModel = new WorldModel(snake1);
+
+    // Initialize the input handler
     iinputHandler1 = new LRKeyInputHandler();
+
+    // Initialize snake controllers
+    snakeController1 = new SnakeController(worldModel, snake1);
+    snakeController2 = new SnakeController(worldModel, snake2);
+
+    // Initialize players
     player1 = new HumanPlayer(snakeController1, iinputHandler1);
     player2 = new AvoidWallsPlayer(snakeController2);
+
+    // Initialize the game controller and set players
     gameController = new GameController(worldModel);
     gameController.player1 = player1;
     gameController.player2 = player2;

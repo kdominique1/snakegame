@@ -3,25 +3,35 @@ import Player from "./Player";
 
 class GameController {
   private world: WorldModel;
+  private _player1: Player;
+  private _player2: Player;
 
   constructor(worldModel: WorldModel) {
     this.world = worldModel;
   }
 
   set player1(firstPlayer: Player) {
-    this.player1 = firstPlayer;
+    this._player1 = firstPlayer;
+  }
+
+  get player1(): Player {
+    return this._player1;
   }
 
   set player2(secondPlayer: Player) {
-    this.player2 = secondPlayer;
+    this._player2 = secondPlayer;
+  }
+
+  get player2(): Player {
+    return this._player2;
   }
 
   run() {
     let lastTime = 0;
 
     const updateFrame = () => {
-      this.player1.makeTurn();
-      this.player2.makeTurn();
+      if (this.player1) this.player1.makeTurn();
+      if (this.player2) this.player2.makeTurn();
       let currentTime = performance.now();
       let timeSinceLast = currentTime - lastTime;
       if (timeSinceLast > 250) {
