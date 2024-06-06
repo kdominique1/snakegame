@@ -53,6 +53,32 @@ describe("GameController", () => {
     jest.clearAllMocks();
   });
 
+  test("should correctly set and get player1", () => {
+    const newPlayer1 = new HumanPlayer(snakeController1, inputHandler1);
+    gameController.player1 = newPlayer1;
+
+    expect(gameController.player1).toBe(newPlayer1);
+  });
+
+  test("should correctly set and get player2", () => {
+    const newPlayer2 = new AvoidWallsPlayer(snakeController2);
+    gameController.player2 = newPlayer2;
+
+    expect(gameController.player2).toBe(newPlayer2);
+  });
+
+  test("should return null for player1 if not set", () => {
+    const tempGameController = new GameController(worldModel);
+
+    expect(tempGameController.player1).toBe(null);
+  });
+
+  test("should return null for player2 if not set", () => {
+    const tempGameController = new GameController(worldModel);
+
+    expect(tempGameController.player2).toBe(null);
+  });
+
   test("should call makeTurn on both players", () => {
     player1.makeTurn = jest.fn();
     player2.makeTurn = jest.fn();
@@ -96,9 +122,9 @@ describe("GameController", () => {
 
     gameController.run();
 
-    // Fix this test, it only calls it when it is more than 255 seconds, not 250
-    jest.advanceTimersByTime(256);
+    // There is a 5 ms delay, so it will trigger it after 255 seconds
+    jest.advanceTimersByTime(1024);
 
-    expect(worldModel.updateSteps).toHaveBeenCalledTimes(1);
+    expect(worldModel.updateSteps).toHaveBeenCalledTimes(4);
   });
 });
