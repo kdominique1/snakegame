@@ -18,8 +18,10 @@ export default function App() {
 
     const greenSnake = new Snake();
     const brownSnake = new Snake();
-    const worldModel1 = new WorldModel(greenSnake);
-    const worldModel2 = new WorldModel(brownSnake);
+    const worldModel1 = new WorldModel();
+    worldModel1.addSnake(greenSnake);
+    const worldModel2 = new WorldModel();
+    worldModel2.addSnake(brownSnake);
     const iInputHandler1 = new LRKeyInputHandler();
     const canvasWorldView = new CanvasWorldView(10);
     const snakeController1 = new SnakeController(worldModel1, greenSnake);
