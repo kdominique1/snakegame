@@ -18,15 +18,17 @@ export default function App() {
 
     const greenSnake = new Snake();
     const brownSnake = new Snake();
-    const redSnake = new Snake();
     const worldModel1 = new WorldModel(greenSnake);
+    const worldModel2 = new WorldModel(brownSnake);
     const iInputHandler1 = new LRKeyInputHandler();
     const canvasWorldView = new CanvasWorldView(10);
     const snakeController1 = new SnakeController(worldModel1, greenSnake);
+    const snakeController2 = new SnakeController(worldModel2, brownSnake);
     const gameController1 = new GameController(worldModel1);
     const avoidWallsPlayer1 = new AvoidWallsPlayer(snakeController1);
-    const humanPlayer1 = new HumanPlayer(snakeController1, iInputHandler1);
-
+    const humanPlayer1 = new HumanPlayer(snakeController2, iInputHandler1);
+    gameController1.player1 = avoidWallsPlayer1;
+    gameController1.player2 = humanPlayer1;
     worldModel1.view = canvasWorldView;
     worldModel1.updateSteps(1);
 
@@ -34,6 +36,7 @@ export default function App() {
     greenSnake.move(2);
     brownSnake.move(1);
     worldModel1.updateSteps(5);
+    worldModel2.updateSteps(5);
 
     display("Brown snake's current position is: " + brownSnake.position);
     display("Green snake's current position is: " + worldModel1.snake.position);
