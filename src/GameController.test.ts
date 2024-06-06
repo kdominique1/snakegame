@@ -14,7 +14,7 @@ describe("GameController", () => {
   let worldModel: WorldModel;
   let snakeController1: SnakeController;
   let snakeController2: SnakeController;
-  let iinputHandler1: LRKeyInputHandler;
+  let inputHandler1: LRKeyInputHandler;
   let player1: HumanPlayer;
   let player2: AvoidWallsPlayer;
   let gameController: GameController;
@@ -28,20 +28,29 @@ describe("GameController", () => {
     worldModel = new WorldModel(snake1);
 
     // Initialize the input handler
-    iinputHandler1 = new LRKeyInputHandler();
+    inputHandler1 = new LRKeyInputHandler();
 
     // Initialize snake controllers
     snakeController1 = new SnakeController(worldModel, snake1);
     snakeController2 = new SnakeController(worldModel, snake2);
 
     // Initialize players
-    player1 = new HumanPlayer(snakeController1, iinputHandler1);
+    player1 = new HumanPlayer(snakeController1, inputHandler1);
     player2 = new AvoidWallsPlayer(snakeController2);
 
     // Initialize the game controller and set players
     gameController = new GameController(worldModel);
     gameController.player1 = player1;
     gameController.player2 = player2;
+
+    // Mock requestAnimationFrame
+    global.requestAnimationFrame = jest
+      .fn()
+      .mockImplementation((cb) => setTimeout(cb, 16));
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   test("should call makeTurn on both players", () => {

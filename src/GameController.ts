@@ -29,7 +29,7 @@ class GameController {
   }
 
   run() {
-    let lastTime = 0;
+    let lastTime = performance.now();
 
     const updateFrame = () => {
       if (this.player1) this.player1.makeTurn();
@@ -38,7 +38,7 @@ class GameController {
       let timeSinceLast = currentTime - lastTime;
       if (timeSinceLast > 250) {
         this.world.updateSteps(1);
-        lastTime += 250;
+        lastTime = currentTime;
       }
       requestAnimationFrame(updateFrame);
     };
