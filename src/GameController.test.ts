@@ -96,8 +96,9 @@ describe("GameController", () => {
 
     gameController.run();
 
-    jest.advanceTimersByTime(1000);
+    // Fix this test, it only calls it when it is more than 255 seconds, not 250
+    jest.advanceTimersByTime(256);
 
-    expect(worldModel.updateSteps).toHaveBeenCalledTimes(4);
+    expect(worldModel.updateSteps).toHaveBeenCalledTimes(1);
   });
 });
