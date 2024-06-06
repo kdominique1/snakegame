@@ -8,6 +8,8 @@ class GameController {
 
   constructor(worldModel: WorldModel) {
     this.world = worldModel;
+    this._player1 = null!;
+    this._player2 = null!;
   }
 
   set player1(firstPlayer: Player) {
