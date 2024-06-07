@@ -1,6 +1,7 @@
 import CanvasWorldView from "../src/CanvasWorldView";
 import WorldModel from "../src/WorldModel";
 import Snake from "../src/Snake";
+import Point from "../src/Point";
 
 describe("CanvasWorldView", () => {
   let canvasWorldView: CanvasWorldView;
@@ -9,10 +10,11 @@ describe("CanvasWorldView", () => {
   let scalingFactor = 10;
 
   beforeEach(() => {
-    snake = new Snake();
-    worldModel = new WorldModel(snake);
+    snake = new Snake(new Point(0, 0), 3);
+    worldModel = new WorldModel();
+    worldModel.addSnake(snake);
     canvasWorldView = new CanvasWorldView(scalingFactor);
-    worldModel.view = canvasWorldView;
+    worldModel.addView(canvasWorldView);
   });
 
   it("should correctly set canvas dimensions based on world model dimensions and scaling factor", () => {
@@ -29,25 +31,27 @@ describe("CanvasWorldView", () => {
     expect(clearRectSpy).toHaveBeenCalledWith(
       0,
       0,
-      worldModel.width * 10,
-      worldModel.height * 10,
+      worldModel.width * scalingFactor,
+      worldModel.height * scalingFactor,
     );
   });
 
-  it("should draw the snake at the correct position", () => {
+  it("should draw each part of the snake at the correct positions", () => {
     snake.move(5);
-    // Use spyon to have the test log the actions of the method
     const fillRectSpy = jest.spyOn(canvasWorldView.canvasContext, "fillRect");
     canvasWorldView.display(worldModel);
-    const expectedX = snake.position.x * scalingFactor;
-    const expectedY = snake.position.y * scalingFactor;
-    // Check which parameters were passed to the method when called
-    expect(fillRectSpy).toHaveBeenCalledWith(
-      expectedX,
-      expectedY,
-      scalingFactor,
-      scalingFactor,
-    );
+
+    snake.currentParts.forEach((part) => {
+      const expectedX = part.x * scalingFactor;
+      const expectedY = part.y * scalingFactor;
+      expect(fillRectSpy).toHaveBeenCalledWith(
+        expectedX,
+        expectedY,
+        scalingFactor,
+        scalingFactor,
+      );
+    });
+
     fillRectSpy.mockRestore();
   });
 });

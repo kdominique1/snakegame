@@ -3,42 +3,63 @@ import Point from "./Point";
 
 /** Class representing a snake. */
 class Snake {
-  private currentPosition: Point;
+  private currentParts: Point[];
   private currentDirection: number;
+
   /**
-   * Creates a snake with position coordinates (0,0) and a starting direction of 1 (right).
+   * Creates a snake with a given start position and size.
+   * @param startPosition - The starting position of the snake's head.
+   * @param size - The initial length of the snake.
    */
-  constructor() {
-    this.currentPosition = new Point(0, 0);
-    this.currentDirection = 1;
+  constructor(startPosition: Point, size: number) {
+    this.currentParts = [startPosition];
+    this.currentDirection = 1; // Start facing right
+    for (let i = 1; i < size; i++) {
+      this.currentParts.push(new Point(startPosition.x - i, startPosition.y));
+    }
   }
 
   /**
   Moves the snake in its current direction the given number of spaces.
   @param spaces - the number of spaces to move the snake.
- */
-  
+  */
   move(spaces: number) {
+    for (let i = this.currentParts.length - 1; i > 0; i--) {
+      this.currentParts[i] = this.currentParts[i - 1];
+    }
+
+    let newHead: Point;
     if (this.currentDirection === 1) {
-    // Right
-      this.currentPosition = new Point(this.currentPosition.x + spaces, this.currentPosition.y
+      // Right
+      newHead = new Point(
+        this.currentParts[0].x + spaces,
+        this.currentParts[0].y,
       );
     } else if (this.currentDirection === 2) {
-    // Down
-    // Change numbers
-      this.currentPosition = new Point(this.currentPosition.x, this.currentPosition.y - spaces)
+      // Down
+      newHead = new Point(
+        this.currentParts[0].x,
+        this.currentParts[0].y + spaces,
+      );
     } else if (this.currentDirection === -1) {
-    // Left
-      this.currentPosition = new Point(this.currentPosition.x - spaces, this.currentPosition.y)
+      // Left
+      newHead = new Point(
+        this.currentParts[0].x - spaces,
+        this.currentParts[0].y,
+      );
     } else {
-    // Up
-      this.currentPosition = new Point(this.currentPosition.x, this.currentPosition.y + spaces)
+      // Up
+      newHead = new Point(
+        this.currentParts[0].x,
+        this.currentParts[0].y - spaces,
+      );
     }
+    this.currentParts[0] = newHead;
   }
 
   /**
   Turns the snake to the right from its current direction.
- */
+  */
   // Change numbers to be easier to understand which direction is which
   turnRight() {
     if (this.currentDirection === 1) {
@@ -48,7 +69,7 @@ class Snake {
       // facing down
       this.currentDirection = -1; // facing left
     } else if (this.currentDirection === -1) {
-          // facing left
+      // facing left
       this.currentDirection = 0; // facing up
     } else {
       // facing up
@@ -58,8 +79,7 @@ class Snake {
 
   /**
   Turns the snake to the left from its current direction.
- */ 
-
+  */
   turnLeft() {
     if (this.currentDirection === 1) {
       // facing right
@@ -67,10 +87,10 @@ class Snake {
     } else if (this.currentDirection === 0) {
       // facing up
       this.currentDirection = -1; // facing left
-    } else if (this.currentDirection === -1)
+    } else if (this.currentDirection === -1) {
       // facing left
       this.currentDirection = 2; // facing down
-    else {
+    } else {
       // facing down
       this.currentDirection = 1; // facing right
     }
@@ -87,16 +107,32 @@ class Snake {
     }
   }
 
-/**
-Returns the snake's current position coordinates as an array.
- */
+  /**
+   * Returns the snake's current head position.
+   * @returns The position of the snake's head.
+   */
   public get position(): Point {
-  // Change to Point object using toString method
-    return this.currentPosition;
+    // Change to Point object using toString method
+    return this.currentParts[0];
   }
 
   public get direction(): number {
     return this.currentDirection;
+  }
+
+  /**
+   * Checks if the snake collides with itself or another snake.
+   * @param s - Another snake to check for collision.
+   * @returns True if the snake collides with itself or another snake, otherwise false.
+   */
+  didCollide(s: Snake): boolean {
+    // Check collision with self
+    if (this.currentParts.slice(1).some((part) => part.equals(this.position))) {
+      return true;
+    }
+
+    // Check collision with another snake
+    return s.currentParts.some((part) => part.equals(this.position));
   }
 }
 

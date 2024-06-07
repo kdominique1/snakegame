@@ -1,5 +1,4 @@
 import "./App.css";
-import "./App.css";
 import Snake from "./Snake";
 import WorldModel from "./WorldModel";
 import display from "./display";
@@ -11,39 +10,46 @@ import SnakeController from "./SnakeController";
 import IInputHandler from "./IInputHandler";
 import LRKeyInputHandler from "./LRKeyInputHandler";
 import AvoidWallsPlayer from "./AvoidWallsPlayer";
+import Point from "./Point";
 
 export default function App() {
   useEffect(() => {
     document.getElementById("output")!.innerText = "OUTPUT:\n";
 
-    const greenSnake = new Snake();
-    const brownSnake = new Snake();
-    const worldModel1 = new WorldModel();
-    worldModel1.addSnake(greenSnake);
-    const worldModel2 = new WorldModel();
-    worldModel2.addSnake(brownSnake);
+    const greenSnake = new Snake(new Point(0, 0), 3);
+    const brownSnake = new Snake(new Point(5, 5), 3);
+    const worldModel = new WorldModel();
+    worldModel.addSnake(greenSnake);
+    worldModel.addSnake(brownSnake);
+
     const iInputHandler1 = new LRKeyInputHandler();
     const canvasWorldView = new CanvasWorldView(10);
-    const snakeController1 = new SnakeController(worldModel1, greenSnake);
-    const snakeController2 = new SnakeController(worldModel2, brownSnake);
-    const gameController1 = new GameController(worldModel1);
+    worldModel.addView(canvasWorldView);
+
+    const snakeController1 = new SnakeController(worldModel, greenSnake);
+    const snakeController2 = new SnakeController(worldModel, brownSnake);
+    const gameController = new GameController(worldModel);
     const avoidWallsPlayer1 = new AvoidWallsPlayer(snakeController1);
     const humanPlayer1 = new HumanPlayer(snakeController2, iInputHandler1);
-    gameController1.player1 = avoidWallsPlayer1;
-    gameController1.player2 = humanPlayer1;
-    worldModel1.view = canvasWorldView;
-    worldModel1.updateSteps(1);
+
+    gameController.player1 = avoidWallsPlayer1;
+    gameController.player2 = humanPlayer1;
+
+    worldModel.updateSteps(1);
 
     greenSnake.move(2);
     greenSnake.move(2);
     brownSnake.move(1);
-    worldModel1.updateSteps(5);
-    worldModel2.updateSteps(5);
+    worldModel.updateSteps(5);
 
-    display("Brown snake's current position is: " + brownSnake.position);
-    display("Green snake's current position is: " + worldModel1.snake.position);
+    display(
+      "Brown snake's current position is: " + brownSnake.position.toString(),
+    );
+    display(
+      "Green snake's current position is: " + greenSnake.position.toString(),
+    );
 
-    gameController1.run();
+    gameController.run();
   }, []);
 
   return (

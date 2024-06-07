@@ -1,5 +1,6 @@
 import IWorldView from "./IWorldView";
 import WorldModel from "./WorldModel";
+import Snake from "./Snake";
 
 /** Class implementing the IWorldView interface to display the world model on a canvas. */
 class CanvasWorldView implements IWorldView {
@@ -34,15 +35,18 @@ class CanvasWorldView implements IWorldView {
       this.worldCanvas.height,
     );
 
-    // Draw the snake
-    this.context.fillStyle = "green"; // Set the color of the snake
-
-    this.context.fillRect(
-      worldModel.snake.position.x * this.scalingFactor,
-      worldModel.snake.position.y * this.scalingFactor,
-      this.scalingFactor,
-      this.scalingFactor,
-    );
+    // Draw each part of each snake
+    worldModel.snakes.forEach((snake: Snake) => {
+      this.context.fillStyle = "green"; // Set the color of the snake
+      snake.currentParts.forEach((part) => {
+        this.context.fillRect(
+          part.x * this.scalingFactor,
+          part.y * this.scalingFactor,
+          this.scalingFactor,
+          this.scalingFactor,
+        );
+      });
+    });
   }
 
   public get canvasWidth(): number {
