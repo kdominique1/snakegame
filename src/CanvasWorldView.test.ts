@@ -41,7 +41,7 @@ describe("CanvasWorldView", () => {
     const fillRectSpy = jest.spyOn(canvasWorldView.canvasContext, "fillRect");
     canvasWorldView.display(worldModel);
 
-    snake.currentParts.forEach((part) => {
+    snake.getCurrentParts.forEach((part) => {
       const expectedX = part.x * scalingFactor;
       const expectedY = part.y * scalingFactor;
       expect(fillRectSpy).toHaveBeenCalledWith(

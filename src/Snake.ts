@@ -120,6 +120,11 @@ class Snake {
     return this.currentDirection;
   }
 
+  // Getter to use for tests
+  public get getCurrentParts(): Point[] {
+    return this.currentParts;
+  }
+
   /**
    * Checks if the snake collides with itself or another snake.
    * @param s - Another snake to check for collision.

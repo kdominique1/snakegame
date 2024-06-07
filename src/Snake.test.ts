@@ -1,11 +1,10 @@
-import Snake from "./Snake";
-import Point from "./Point";
-
+import Snake from "../src/Snake";
+import Point from "../src/Point";
 
 const moveSnakes = (times: number, turn: boolean = false) => {
-  const maroonSnake = new Snake();
+  const maroonSnake = new Snake(new Point(0, 0), 3);
   let totalXCoordMaroon = 0;
-  let totalYCoordMaroon = 0
+  let totalYCoordMaroon = 0;
 
   for (let i = 0; i < times; i++) {
     const numSquares1 = Math.floor(Math.random() * 100);
@@ -20,7 +19,10 @@ const moveSnakes = (times: number, turn: boolean = false) => {
     totalXCoordMaroon += numSquares1;
   }
 
-  return { actual: maroonSnake.position.toString(), expected: totalXCoordMaroon + "," + totalYCoordMaroon};
+  return {
+    actual: maroonSnake.position.toString(),
+    expected: totalXCoordMaroon + "," + totalYCoordMaroon,
+  };
 };
 
 describe("Snake Tests", function () {
@@ -39,7 +41,6 @@ describe("Snake Tests", function () {
     );
   });
 });
-
 
 describe("Addition", function () {
   it("sums numbers", () => {

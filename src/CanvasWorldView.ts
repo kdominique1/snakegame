@@ -38,7 +38,7 @@ class CanvasWorldView implements IWorldView {
     // Draw each part of each snake
     worldModel.snakes.forEach((snake: Snake) => {
       this.context.fillStyle = "green"; // Set the color of the snake
-      snake.currentParts.forEach((part) => {
+      snake.getCurrentParts.forEach((part) => {
         this.context.fillRect(
           part.x * this.scalingFactor,
           part.y * this.scalingFactor,

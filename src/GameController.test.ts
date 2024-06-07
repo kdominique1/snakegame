@@ -1,10 +1,11 @@
-import GameController from "./GameController";
-import WorldModel from "./WorldModel";
-import Snake from "./Snake";
-import SnakeController from "./SnakeController";
-import HumanPlayer from "./HumanPlayer";
-import AvoidWallsPlayer from "./AvoidWallsPlayer";
-import LRKeyInputHandler from "./LRKeyInputHandler";
+import GameController from "../src/GameController";
+import WorldModel from "../src/WorldModel";
+import Snake from "../src/Snake";
+import SnakeController from "../src/SnakeController";
+import HumanPlayer from "../src/HumanPlayer";
+import AvoidWallsPlayer from "../src/AvoidWallsPlayer";
+import LRKeyInputHandler from "../src/LRKeyInputHandler";
+import Point from "../src/Point";
 
 jest.useFakeTimers();
 
@@ -20,30 +21,25 @@ describe("GameController", () => {
   let gameController: GameController;
 
   beforeEach(() => {
-    // Initialize the snakes
-    snake1 = new Snake();
-    snake2 = new Snake();
+    snake1 = new Snake(new Point(0, 0), 3);
+    snake2 = new Snake(new Point(10, 10), 3);
 
-    // Initialize the world model with snake1
-    worldModel = new WorldModel(snake1);
+    worldModel = new WorldModel();
+    worldModel.addSnake(snake1);
+    worldModel.addSnake(snake2);
 
-    // Initialize the input handler
     inputHandler1 = new LRKeyInputHandler();
 
-    // Initialize snake controllers
     snakeController1 = new SnakeController(worldModel, snake1);
     snakeController2 = new SnakeController(worldModel, snake2);
 
-    // Initialize players
     player1 = new HumanPlayer(snakeController1, inputHandler1);
     player2 = new AvoidWallsPlayer(snakeController2);
 
-    // Initialize the game controller and set players
     gameController = new GameController(worldModel);
     gameController.player1 = player1;
     gameController.player2 = player2;
 
-    // Mock requestAnimationFrame
     global.requestAnimationFrame = jest
       .fn()
       .mockImplementation((cb) => setTimeout(cb, 16));
@@ -122,7 +118,6 @@ describe("GameController", () => {
 
     gameController.run();
 
-    // There is a 5 ms delay, so it will trigger it after 255 seconds
     jest.advanceTimersByTime(1024);
 
     expect(worldModel.updateSteps).toHaveBeenCalledTimes(4);
