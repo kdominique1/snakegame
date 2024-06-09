@@ -16,14 +16,14 @@ export default function App() {
   useEffect(() => {
     document.getElementById("output")!.innerText = "OUTPUT:\n";
 
-    const greenSnake = new Snake(new Point(0, 0), 3);
-    const brownSnake = new Snake(new Point(5, 5), 3);
+    const greenSnake = new Snake(new Point(0, 0), 5);
+    const brownSnake = new Snake(new Point(7, 7), 5);
     const worldModel = new WorldModel();
     worldModel.addSnake(greenSnake);
     worldModel.addSnake(brownSnake);
 
     const iInputHandler1 = new LRKeyInputHandler();
-    const canvasWorldView = new CanvasWorldView(10);
+    const canvasWorldView = new CanvasWorldView(7);
     worldModel.addView(canvasWorldView);
 
     const snakeController1 = new SnakeController(worldModel, greenSnake);
@@ -54,8 +54,8 @@ export default function App() {
 
   return (
     <div className="App">
-      <h1>Hello CodeSandbox</h1>
-      <h2>Start editing to see some magic happen!</h2>
+      {/* <h1>Hello CodeSandbox</h1>
+      <h2>Start editing to see some magic happen!</h2> */}
       <pre id="output">
         OUTPUT: <br />
       </pre>

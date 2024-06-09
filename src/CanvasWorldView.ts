@@ -35,6 +35,15 @@ class CanvasWorldView implements IWorldView {
       this.worldCanvas.height,
     );
 
+    // Set the background to black to make it easier to see where the canvas starts and ends
+    this.context.fillStyle = "black";
+    this.context.fillRect(
+      0,
+      0,
+      this.worldCanvas.width,
+      this.worldCanvas.height,
+    );
+
     // Draw each part of each snake
     worldModel.snakes.forEach((snake: Snake) => {
       this.context.fillStyle = "green"; // Set the color of the snake

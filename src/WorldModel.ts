@@ -29,6 +29,8 @@ class WorldModel {
     // doesn't show at all when going down the right side or left on the bottom side,
     // then it reappears when going up the left side and correctly turns at the top
     // left corner
+    // Most likely, the snakes are still going but they're going off the grid so it
+    // doesn't show it
     const collidedSnakes: Snake[] = [];
 
     for (let i = 0; i < this.allSnakes.length; i++) {
