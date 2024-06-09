@@ -136,7 +136,6 @@ class Snake {
       return true;
     }
 
-    // Check collision with another snake
     return s.currentParts.some((part) => part.equals(this.position));
   }
 }

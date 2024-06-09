@@ -1,10 +1,8 @@
 import Player from "../src/Player";
 import SnakeController from "../src/SnakeController";
 
-// Mock subclass of Player to test the abstract class
 class MockPlayer extends Player {
   makeTurn(): void {
-    // Implementation for testing purposes
     console.log("Mock makeTurn called");
   }
 }
@@ -14,10 +12,7 @@ describe("Player", () => {
   let player: Player;
 
   beforeEach(() => {
-    // Mock the SnakeController as needed
-    sc = {
-      /* mock methods and properties */
-    } as unknown as SnakeController;
+    sc = {} as unknown as SnakeController;
     player = new MockPlayer(sc);
   });
 

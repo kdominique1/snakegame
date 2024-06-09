@@ -23,10 +23,12 @@ class WorldModel {
     @param steps - The number of steps for the snakes to move.
   */
   updateSteps(steps: number) {
-    // Move all snakes
     this.allSnakes.forEach((snake) => snake.move(steps));
 
-    // Check for collisions
+    // Double check this. The snake disappears after hitting the top right corner,
+    // doesn't show at all when going down the right side or left on the bottom side,
+    // then it reappears when going up the left side and correctly turns at the top
+    // left corner
     const collidedSnakes: Snake[] = [];
 
     for (let i = 0; i < this.allSnakes.length; i++) {
@@ -42,7 +44,6 @@ class WorldModel {
       }
     }
 
-    // Remove collided snakes
     collidedSnakes.forEach((snake) => {
       const index = this.allSnakes.indexOf(snake);
       if (index !== -1) {
@@ -50,7 +51,6 @@ class WorldModel {
       }
     });
 
-    // Update all views
     this.allViews.forEach((view) => view.display(this));
   }
 
