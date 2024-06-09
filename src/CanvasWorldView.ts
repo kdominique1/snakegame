@@ -14,9 +14,18 @@ class CanvasWorldView implements IWorldView {
    */
   constructor(scalingFactor: number) {
     this.scalingFactor = scalingFactor;
-    this.worldCanvas = document.createElement("canvas");
+
+    // Check if the canvas already exists
+    this.worldCanvas = document.getElementById(
+      "worldCanvas",
+    ) as HTMLCanvasElement;
+    if (!this.worldCanvas) {
+      this.worldCanvas = document.createElement("canvas");
+      this.worldCanvas.id = "worldCanvas"; // Assign an ID to the canvas
+      document.body.appendChild(this.worldCanvas);
+    }
+
     this.context = this.worldCanvas.getContext("2d")!;
-    document.body.appendChild(this.worldCanvas);
   }
 
   /**
@@ -35,7 +44,7 @@ class CanvasWorldView implements IWorldView {
       this.worldCanvas.height,
     );
 
-    // Set the background to black to make it easier to see where the canvas starts and ends
+    // Set the background to black
     this.context.fillStyle = "black";
     this.context.fillRect(
       0,
