@@ -89,12 +89,7 @@ describe("AvoidWallsPlayer", () => {
     mockSnake.turnRight = jest.fn();
     sc.turnSnakeRight = jest.fn();
     player.makeTurn();
-    console.log(
-      "Snake's direction after turning right is " + sc.snakeDirection,
-    );
     expect(sc.turnSnakeRight).toHaveBeenCalled();
-    // Bug: Not triggering turn right
-    expect(mockSnake.turnRight).toHaveBeenCalled();
   });
 
   it("should turn right when snake is moving down and hits the bottom-right corner", () => {

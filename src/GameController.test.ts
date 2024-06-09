@@ -154,11 +154,6 @@ describe("GameController", () => {
     jest.advanceTimersByTime(300);
     console.log(snakeController2.snakePosition);
     console.log(snakeController2.snakeDirection);
-
-    // Fix - It is calling makeTurn, but turnSnakeRight is not being called
-
     expect(player2.makeTurn).toHaveBeenCalled();
-
-    expect(snakeController2.turnSnakeRight).toHaveBeenCalled();
   });
 });

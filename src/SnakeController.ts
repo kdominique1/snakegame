@@ -12,13 +12,13 @@ class SnakeController {
   }
 
   turnSnakeLeft() {
-    console.log("SnakeController: turnSnakeLeft called");
+    console.log("turnSnakeLeft called");
     this.slitherer.turnLeft();
     console.log(`Snake new direction: ${this.slitherer.direction}`);
   }
 
   turnSnakeRight() {
-    console.log("SnakeController: turnSnakeRight called");
+    console.log("turnSnakeRight called");
     this.slitherer.turnRight();
     console.log(`Snake new direction: ${this.slitherer.direction}`);
   }

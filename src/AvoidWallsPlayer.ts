@@ -6,11 +6,6 @@ class AvoidWallsPlayer extends Player {
     super(sc);
   }
 
-  // Fix this method because snake is disappearing after hitting top-right corner and then reappears
-  // at bottom left corner and turns correctly at top left corner
-  // Problem may be that the snake is turning too late. It turns when its first pixel hits the wall,
-  // but by that time the rest of it has gone off the grid. Have to change the position to account
-  // for the snake's length (add multiples)
   makeTurn() {
     // For left (Counter-clockwise)
     if (
@@ -20,7 +15,7 @@ class AvoidWallsPlayer extends Player {
         this.sc.snakePosition.y <= this.sc.worldHeight / 2) ||
       // If the snake's direction is down, y is greater than or equal to height, and x is less than or equal to half of width, it will turn to the right
       (this.sc.snakeDirection === 2 && // Down
-        this.sc.snakePosition.y >= this.sc.worldHeight &&
+        this.sc.snakePosition.y >= this.sc.worldHeight - 1 &&
         this.sc.snakePosition.x <= this.sc.worldWidth / 2) ||
       // If the snake's direction is up, y is less than or equal to 0, and x is greater than or equal to half of width, snake should turn to the left
       (this.sc.snakeDirection === 0 && // Up
@@ -28,7 +23,7 @@ class AvoidWallsPlayer extends Player {
         this.sc.snakePosition.x >= this.sc.worldWidth / 2) ||
       // If the snake's direction is right, x is greater than or equal to the width, and y is greater than or equal to half of height, the snake should turn up
       (this.sc.snakeDirection === 1 && // Right
-        this.sc.snakePosition.x >= this.sc.worldWidth &&
+        this.sc.snakePosition.x >= this.sc.worldWidth - 1 &&
         this.sc.snakePosition.y >= this.sc.worldHeight / 2)
     ) {
       this.sc.turnSnakeLeft();
@@ -40,11 +35,11 @@ class AvoidWallsPlayer extends Player {
         this.sc.snakePosition.x <= this.sc.worldWidth / 2) || // Up
       // If direction is right, x is greater than or equal to the width, and y is less than or equal to half the height, snake should turn down
       (this.sc.snakeDirection === 1 &&
-        this.sc.snakePosition.x >= this.sc.worldWidth &&
+        this.sc.snakePosition.x >= this.sc.worldWidth - 1 &&
         this.sc.snakePosition.y <= this.sc.worldHeight / 2) || // Right
       // If direction is down, y is greater than or equal to the height, and x is less than or equal to half the width, snake should turn to the left
       (this.sc.snakeDirection === 2 &&
-        this.sc.snakePosition.y >= this.sc.worldHeight &&
+        this.sc.snakePosition.y >= this.sc.worldHeight - 1 &&
         this.sc.snakePosition.x >= this.sc.worldWidth / 2) || // Down
       // If direction is left, x is less than or equal to 0, and y is greater than or equal to half the height, snake should turn up
       (this.sc.snakeDirection === -1 &&

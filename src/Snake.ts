@@ -5,6 +5,7 @@ import Point from "./Point";
 class Snake {
   private currentParts: Point[];
   private currentDirection: number;
+  private size: number;
 
   /**
    * Creates a snake with a given start position and size.
@@ -13,6 +14,7 @@ class Snake {
    */
   constructor(startPosition: Point, size: number) {
     this.currentParts = [startPosition];
+    this.size = size;
     this.currentDirection = 1; // Start facing right
     for (let i = 1; i < size; i++) {
       this.currentParts.push(new Point(startPosition.x - i, startPosition.y));
