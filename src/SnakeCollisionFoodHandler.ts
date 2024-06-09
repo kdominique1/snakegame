@@ -1,10 +1,10 @@
 import Snake from "./Snake";
-import IFood from "./IFood";
+import Food from "./Food";
 
 class SnakeCollisionFoodHandler {
-  applyAction(snake: Snake, food: IFood) {
+  applyAction(snake: Snake, food: Food) {
     food.eat();
-    // snake.grow();
+    snake.grow();
   }
 }
 

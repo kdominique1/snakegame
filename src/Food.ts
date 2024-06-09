@@ -23,6 +23,10 @@ class Food implements IActor {
   public get isActive() {
     return this.isCurrentlyActive;
   }
+
+  public get type() {
+    return "actor";
+  }
 }
 
 export default Food;

@@ -1,5 +1,6 @@
-import display from "./display";
 import Point from "./Point";
+import IActor from "./IActor";
+import Food from "./Food";
 import ICollidable from "./ICollidable";
 
 /** Class representing a snake. */
@@ -25,9 +26,9 @@ class Snake implements ICollidable {
   }
 
   /**
-  Moves the snake in its current direction the given number of spaces.
-  @param spaces - the number of spaces to move the snake.
-  */
+   * Moves the snake in its current direction the given number of spaces.
+   * @param spaces - the number of spaces to move the snake.
+   */
   move(spaces: number) {
     for (let i = this.currentParts.length - 1; i > 0; i--) {
       this.currentParts[i] = this.currentParts[i - 1];
@@ -63,9 +64,8 @@ class Snake implements ICollidable {
   }
 
   /**
-  Turns the snake to the right from its current direction.
-  */
-  // Change numbers to be easier to understand which direction is which
+   * Turns the snake to the right from its current direction.
+   */
   turnRight() {
     if (this.currentDirection === 1) {
       // facing right
@@ -83,8 +83,8 @@ class Snake implements ICollidable {
   }
 
   /**
-  Turns the snake to the left from its current direction.
-  */
+   * Turns the snake to the left from its current direction.
+   */
   turnLeft() {
     if (this.currentDirection === 1) {
       // facing right
@@ -117,7 +117,6 @@ class Snake implements ICollidable {
    * @returns The position of the snake's head.
    */
   public get position(): Point {
-    // Change to Point object using toString method
     return this.currentParts[0];
   }
 
@@ -135,12 +134,41 @@ class Snake implements ICollidable {
    * @param s - Another snake to check for collision.
    * @returns True if the snake collides with itself or another snake, otherwise false.
    */
-  didCollide(s: Snake | ICollidable): boolean {
-    // Check collision with self
-    if (this.currentParts.slice(1).some((part) => part.equals(this.position))) {
+  didCollide(s: Snake | IActor): boolean {
+    // Check collision with self or other objects
+    if (!(s instanceof Snake)) {
+      return s.currentPosition.equals(this.position);
+    } else if (
+      this.currentParts.slice(1).some((part) => part.equals(this.position))
+    ) {
       return true;
+    } else {
+      s.currentParts.some((part) => part.equals(this.position));
     }
-    return s.currentParts.some((part) => part.equals(this.position));
+  }
+
+  /**
+   * Adds one new Point to its parts array, extending its length.
+   */
+  grow() {
+    const tail = this.currentParts[this.currentParts.length - 1];
+    let newPart: Point;
+
+    if (this.currentDirection === 1) {
+      // Right
+      newPart = new Point(tail.x + 1, tail.y);
+    } else if (this.currentDirection === -1) {
+      // Left
+      newPart = new Point(tail.x - 1, tail.y);
+    } else if (this.currentDirection === 2) {
+      // Down
+      newPart = new Point(tail.x, tail.y + 1);
+    } else {
+      // Up
+      newPart = new Point(tail.x, tail.y - 1);
+    }
+
+    this.currentParts.push(newPart);
   }
 
   update(steps: number) {
@@ -158,8 +186,6 @@ class Snake implements ICollidable {
   public get type() {
     return "snake";
   }
-
-  // Do 4.6-4.7 of part 7
 }
 
 export default Snake;
