@@ -8,7 +8,9 @@ class AvoidWallsPlayer extends Player {
 
   // Fix this method because snake is disappearing after hitting top-right corner and then reappears
   // at bottom left corner and turns correctly at top left corner
-  // makeTurn is not being called when it should. All the scenarios are correct
+  // Problem may be that the snake is turning too late. It turns when its first pixel hits the wall,
+  // but by that time the rest of it has gone off the grid. Have to change the position to account
+  // for the snake's length (add multiples)
   makeTurn() {
     // For left (Counter-clockwise)
     if (
