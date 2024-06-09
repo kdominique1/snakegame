@@ -27,35 +27,35 @@ describe("AvoidWallsPlayer", () => {
 
   it("should turn left when snake is moving left and hits the left wall", () => {
     jest.spyOn(sc, "snakeDirection", "get").mockReturnValue(-1);
-    jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(0, 51));
+    jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(0, 49));
     player.makeTurn();
     expect(sc.turnSnakeLeft).toHaveBeenCalled();
   });
 
-  it("should turn left when snake is moving down and is at the top-left corner", () => {
+  it("should turn left when snake is moving down and is at the bottom-left corner", () => {
     jest.spyOn(sc, "snakeDirection", "get").mockReturnValue(2);
-    jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(25, 0));
+    jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(25, 100));
     player.makeTurn();
     expect(sc.turnSnakeLeft).toHaveBeenCalled();
   });
 
-  it("should turn left when snake is moving up and is at the bottom-right corner", () => {
+  it("should turn left when snake is moving up and is at the top-right corner", () => {
     jest.spyOn(sc, "snakeDirection", "get").mockReturnValue(0);
-    jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(75, 100));
+    jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(75, 0));
     player.makeTurn();
     expect(sc.turnSnakeLeft).toHaveBeenCalled();
   });
 
-  it("should turn left when snake is moving right and is at the top-right corner", () => {
+  it("should turn left when snake is moving right and is at the bottom-right corner", () => {
     jest.spyOn(sc, "snakeDirection", "get").mockReturnValue(1);
     jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(100, 75));
     player.makeTurn();
     expect(sc.turnSnakeLeft).toHaveBeenCalled();
   });
 
-  it("should turn right when snake is moving up and is at the top-left corner", () => {
+  it("should turn right when snake is moving up and is at the bottom-left corner", () => {
     jest.spyOn(sc, "snakeDirection", "get").mockReturnValue(0);
-    jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(25, 100));
+    jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(25, 0));
     player.makeTurn();
     expect(sc.turnSnakeRight).toHaveBeenCalled();
   });
@@ -67,21 +67,16 @@ describe("AvoidWallsPlayer", () => {
     expect(sc.turnSnakeRight).toHaveBeenCalled();
   });
 
-  it("should turn right when snake is moving down and is at the bottom-right corner", () => {
+  it("should turn right when snake is moving down and is at the top-right corner", () => {
     jest.spyOn(sc, "snakeDirection", "get").mockReturnValue(2);
-    jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(75, 0));
+    jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(75, 100));
     player.makeTurn();
     expect(sc.turnSnakeRight).toHaveBeenCalled();
   });
 
   it("should turn right when snake is moving left and is at the bottom-left corner", () => {
     jest.spyOn(sc, "snakeDirection", "get").mockReturnValue(-1);
-    jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(0, 49));
-
-    console.log("Direction:", sc.snakeDirection);
-    console.log("Position:", sc.snakePosition.x, sc.snakePosition.y);
-    console.log("World Height:", sc.worldHeight);
-
+    jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(0, 100));
     player.makeTurn();
     expect(sc.turnSnakeRight).toHaveBeenCalled();
   });
