@@ -9,12 +9,11 @@ describe("SnakeController", () => {
   let snakeController: SnakeController;
 
   beforeEach(() => {
-    // Mock the Snake and WorldModel with their necessary properties and methods
     slitherer = {
       turnLeft: jest.fn(),
       turnRight: jest.fn(),
       position: new Point(5, 5),
-      direction: 0, // Assuming 0 is a valid direction
+      direction: 0,
     } as unknown as Snake;
 
     snakeWorld = {
