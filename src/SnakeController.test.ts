@@ -13,7 +13,7 @@ describe("SnakeController", () => {
       turnLeft: jest.fn(),
       turnRight: jest.fn(),
       position: new Point(5, 5),
-      direction: 0,
+      direction: 1,
     } as unknown as Snake;
 
     snakeWorld = {
@@ -27,6 +27,11 @@ describe("SnakeController", () => {
   it("should turn the snake left", () => {
     snakeController.turnSnakeLeft();
     expect(slitherer.turnLeft).toHaveBeenCalled();
+    // Bug: Snake controller direction is still the same
+    console.log(
+      "Snake controller direction after turning left from right is: " +
+        snakeController.snakeDirection,
+    );
   });
 
   it("should turn the snake right", () => {
@@ -41,7 +46,7 @@ describe("SnakeController", () => {
 
   it("should get the snake direction", () => {
     const direction = snakeController.snakeDirection;
-    expect(direction).toBe(0);
+    expect(direction).toBe(1);
   });
 
   it("should get the world width", () => {

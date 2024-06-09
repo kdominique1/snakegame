@@ -122,4 +122,43 @@ describe("GameController", () => {
 
     expect(worldModel.updateSteps).toHaveBeenCalledTimes(4);
   });
+
+  test("should call makeTurn and influence snake position", () => {
+    const initialPosition = new Point(0, 0);
+    jest
+      .spyOn(snakeController2, "snakePosition", "get")
+      .mockReturnValue(initialPosition);
+
+    player2.makeTurn = jest.fn();
+    gameController.run();
+
+    jest.advanceTimersByTime(300);
+
+    expect(player2.makeTurn).toHaveBeenCalled();
+
+    const updatedPosition = snakeController2.snakePosition;
+    expect(updatedPosition).not.toEqual(initialPosition);
+  });
+
+  test("should call makeTurn and ensure AvoidWallsPlayer changes direction at boundaries", () => {
+    const boundaryPosition = new Point(100, 0);
+    jest
+      .spyOn(snakeController2, "snakePosition", "get")
+      .mockReturnValue(boundaryPosition);
+    jest.spyOn(snakeController2, "snakeDirection", "get").mockReturnValue(1);
+
+    player2.makeTurn = jest.fn();
+    snakeController2.turnSnakeRight = jest.fn();
+    gameController.run();
+
+    jest.advanceTimersByTime(300);
+    console.log(snakeController2.snakePosition);
+    console.log(snakeController2.snakeDirection);
+
+    // Fix - It is calling makeTurn, but turnSnakeRight is not being called
+
+    expect(player2.makeTurn).toHaveBeenCalled();
+
+    expect(snakeController2.turnSnakeRight).toHaveBeenCalled();
+  });
 });
