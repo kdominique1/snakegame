@@ -135,15 +135,17 @@ class Snake implements ICollidable {
    * @returns True if the snake collides with itself or another snake, otherwise false.
    */
   didCollide(s: Snake | IActor): boolean {
-    // Check collision with self or other objects
+    // Collision with other objects
     if (!(s instanceof Snake)) {
-      return s.currentPosition.equals(this.position);
+      return s.position.equals(this.position);
+      // Collision with itself
     } else if (
       this.currentParts.slice(1).some((part) => part.equals(this.position))
     ) {
       return true;
+      // Collision with other snakes
     } else {
-      s.currentParts.some((part) => part.equals(this.position));
+      return s.currentParts.some((part) => part.equals(this.position));
     }
   }
 
