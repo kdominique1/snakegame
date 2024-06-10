@@ -17,20 +17,20 @@ class ActorCollisionHandlers {
     collidedType: string,
     actionApplicator: ICollisionHandler,
   ) {
-    const key = this.toKey(colliderType, collidedType);
+    let key = this.toKey(colliderType, collidedType);
     this.pairs.set(key, actionApplicator);
   }
 
   hasCollisionAction(colliderType: string, collidedType: string): boolean {
-    const key = this.toKey(colliderType, collidedType);
+    let key = this.toKey(colliderType, collidedType);
     return this.pairs.has(key);
   }
 
   applyCollisionAction(collider: IActor, collided: IActor): void {
-    const key = this.toKey(collider.type, collided.type);
+    let key = this.toKey(collider.type, collided.type);
     if (this.pairs.has(key)) {
-      const handler = this.pairs.get(key)!;
-      handler.applyAction(collider, collided);
+      let getValue = this.pairs.get(key)!;
+      getValue.applyAction(collider, collided);
     }
   }
 }
