@@ -1,11 +1,21 @@
 import IActor from "./IActor";
 import ICollisionHandler from "./ICollisionHandler";
+import SnakeCollisionFoodHandler from "./SnakeCollisionFoodHandler";
+import SnakeSnakeCollisionHandler from "./SnakeSnakeCollisionHandler";
 
 class ActorCollisionHandlers {
   private pairs: Map<string, ICollisionHandler>;
 
   constructor() {
     this.pairs = new Map();
+    this.pairs.set(
+      this.toKey("Snake", "Food"),
+      new SnakeCollisionFoodHandler(),
+    );
+    this.pairs.set(
+      this.toKey("Snake", "Snake"),
+      new SnakeSnakeCollisionHandler(),
+    );
   }
 
   toKey(colliderType: string, collidedType: string): string {

@@ -1,7 +1,7 @@
 import IActor from "./IActor";
 
 interface ICollisionHandler {
-  applyAction: (actor1: IActor, actor2: IActor) => void;
+  applyAction: (actor1: any, actor2: any) => void;
 }
 
 export default ICollisionHandler;

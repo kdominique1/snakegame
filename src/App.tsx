@@ -35,8 +35,8 @@ export default function App() {
     );
 
     const worldModel = new WorldModel(100, 100, collisionHandlers);
-    worldModel.addSnake(greenSnake);
-    worldModel.addSnake(brownSnake);
+    worldModel.addActor(greenSnake);
+    worldModel.addActor(brownSnake);
 
     const iInputHandler1 = new LRKeyInputHandler();
     const canvasWorldView = new CanvasWorldView(7);

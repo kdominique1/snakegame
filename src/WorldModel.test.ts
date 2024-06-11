@@ -5,7 +5,7 @@ import Point from "../src/Point";
 const updateNumOfSteps = (times: number) => {
   const blueSnake = new Snake(new Point(0, 0), 3);
   const worldModelOne = new WorldModel();
-  worldModelOne.addSnake(blueSnake);
+  worldModelOne.addActor(blueSnake);
   let totalXCoord = 0;
   let totalYCoord = 0;
   let currentDirection = 1;
