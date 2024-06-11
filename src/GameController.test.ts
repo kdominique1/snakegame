@@ -129,7 +129,6 @@ describe("GameController", () => {
     const initialPosition = snake2.getCurrentParts[0];
 
     player2.makeTurn = jest.fn().mockImplementation(() => {
-      // Simulate a move by updating the world model
       worldModel.updateSteps(1);
     });
 

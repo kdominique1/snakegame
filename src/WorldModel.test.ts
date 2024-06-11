@@ -99,16 +99,7 @@ describe("WorldModel Tests", function () {
   });
 
   it("should remove actors that collide", () => {
-    actorCollisionHandlers.applyCollisionAction = jest.fn((actor1, actor2) => {
-      // Remove both actors upon collision
-      const actors = [actor1, actor2];
-      actors.forEach((actor) => {
-        const index = worldModel.actors_.indexOf(actor);
-        if (index > -1) {
-          worldModel.actors_.splice(index, 1);
-        }
-      });
-    });
+    actorCollisionHandlers.applyCollisionAction = jest.fn();
 
     const worldModel = new WorldModel(100, 100, actorCollisionHandlers);
     const snake1 = new Snake(new Point(0, 0), 3);
@@ -117,12 +108,15 @@ describe("WorldModel Tests", function () {
     worldModel.addActor(snake1);
     worldModel.addActor(snake2);
 
-    expect(worldModel.actors_.length).toBe(2);
+    const initialActorsArray = Array.from(worldModel.actors);
+    expect(initialActorsArray.length).toBe(2);
 
     worldModel.updateSteps(1);
 
     expect(actorCollisionHandlers.applyCollisionAction).toHaveBeenCalled();
-    expect(worldModel.actors_.length).toBe(0); // Both snakes should be removed
+
+    const finalActorsArray = Array.from(worldModel.actors);
+    expect(finalActorsArray.length).toBe(0); // Both snakes should be removed
   });
 });
 

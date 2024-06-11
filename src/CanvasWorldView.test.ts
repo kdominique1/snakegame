@@ -18,7 +18,6 @@ describe("CanvasWorldView", () => {
     canvasWorldView = new CanvasWorldView(scalingFactor);
     worldModel.addView(canvasWorldView);
 
-    // Mock the getContext method to return a fake context
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
     jest.spyOn(document, "getElementById").mockReturnValue(canvas);
