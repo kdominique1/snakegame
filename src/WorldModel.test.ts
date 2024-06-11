@@ -1,16 +1,29 @@
 import WorldModel from "../src/WorldModel";
 import Snake from "../src/Snake";
 import Point from "../src/Point";
+import ActorCollisionHandlers from "../src/ActorCollisionHandlers";
+import IWorldView from "../src/IWorldView";
 
-const updateNumOfSteps = (times: number) => {
+class MockView implements IWorldView {
+  public displayCalled: boolean = false;
+
+  display(worldModel: WorldModel): void {
+    this.displayCalled = true;
+  }
+}
+
+const updateNumOfSteps = (
+  times: number,
+  actorCollisionHandlers: ActorCollisionHandlers,
+) => {
   const blueSnake = new Snake(new Point(0, 0), 3);
-  const worldModelOne = new WorldModel();
+  const worldModelOne = new WorldModel(100, 100, actorCollisionHandlers);
   worldModelOne.addActor(blueSnake);
   let totalXCoord = 0;
   let totalYCoord = 0;
   let currentDirection = 1;
 
-  for (let i = 0; i <= times; i++) {
+  for (let i = 0; i < times; i++) {
     const numOfSteps = Math.floor(Math.random() * 100);
 
     // Move in the current direction
@@ -42,12 +55,20 @@ const updateNumOfSteps = (times: number) => {
 
   return {
     actual: blueSnake.position.toString(),
-    expected: totalXCoord + "," + totalYCoord,
+    expected: `${totalXCoord},${totalYCoord}`,
   };
 };
 
 describe("WorldModel Tests", function () {
-  const tests = [0, 3, 10, 4].map((num) => updateNumOfSteps(num));
+  let actorCollisionHandlers: ActorCollisionHandlers;
+
+  beforeEach(() => {
+    actorCollisionHandlers = new ActorCollisionHandlers();
+  });
+
+  const tests = [0, 3, 10, 4].map((num) =>
+    updateNumOfSteps(num, actorCollisionHandlers),
+  );
 
   const testDescriptions = ["correctly updates the snake's position"];
 
@@ -55,6 +76,53 @@ describe("WorldModel Tests", function () {
     it(description, () =>
       expect(tests[index].actual).toBe(tests[index].expected),
     );
+  });
+
+  it("should correctly add actors to the world model", () => {
+    const worldModel = new WorldModel(100, 100, actorCollisionHandlers);
+    const snake = new Snake(new Point(0, 0), 3);
+    worldModel.addActor(snake);
+
+    const actorsArray = Array.from(worldModel.actors);
+    expect(actorsArray.length).toBe(1);
+    expect(actorsArray[0]).toBe(snake);
+  });
+
+  it("should call display on all views when updateSteps is called", () => {
+    const worldModel = new WorldModel(100, 100, actorCollisionHandlers);
+    const mockView = new MockView();
+    worldModel.addView(mockView);
+
+    worldModel.updateSteps(1);
+
+    expect(mockView.displayCalled).toBe(true);
+  });
+
+  it("should remove actors that collide", () => {
+    actorCollisionHandlers.applyCollisionAction = jest.fn((actor1, actor2) => {
+      // Remove both actors upon collision
+      const actors = [actor1, actor2];
+      actors.forEach((actor) => {
+        const index = worldModel.actors_.indexOf(actor);
+        if (index > -1) {
+          worldModel.actors_.splice(index, 1);
+        }
+      });
+    });
+
+    const worldModel = new WorldModel(100, 100, actorCollisionHandlers);
+    const snake1 = new Snake(new Point(0, 0), 3);
+    const snake2 = new Snake(new Point(0, 0), 3); // Ensure they start at the same point
+
+    worldModel.addActor(snake1);
+    worldModel.addActor(snake2);
+
+    expect(worldModel.actors_.length).toBe(2);
+
+    worldModel.updateSteps(1);
+
+    expect(actorCollisionHandlers.applyCollisionAction).toHaveBeenCalled();
+    expect(worldModel.actors_.length).toBe(0); // Both snakes should be removed
   });
 });
 

@@ -6,6 +6,7 @@ import HumanPlayer from "../src/HumanPlayer";
 import AvoidWallsPlayer from "../src/AvoidWallsPlayer";
 import LRKeyInputHandler from "../src/LRKeyInputHandler";
 import Point from "../src/Point";
+import ActorCollisionHandlers from "../src/ActorCollisionHandlers";
 
 jest.useFakeTimers();
 
@@ -24,9 +25,10 @@ describe("GameController", () => {
     snake1 = new Snake(new Point(0, 0), 3);
     snake2 = new Snake(new Point(10, 10), 3);
 
-    worldModel = new WorldModel();
-    worldModel.addSnake(snake1);
-    worldModel.addSnake(snake2);
+    const mockCollisionHandlers = new ActorCollisionHandlers();
+    worldModel = new WorldModel(100, 100, mockCollisionHandlers);
+    worldModel.addActor(snake1);
+    worldModel.addActor(snake2);
 
     inputHandler1 = new LRKeyInputHandler();
 
@@ -124,19 +126,20 @@ describe("GameController", () => {
   });
 
   test("should call makeTurn and influence snake position", () => {
-    const initialPosition = new Point(0, 0);
-    jest
-      .spyOn(snakeController2, "snakePosition", "get")
-      .mockReturnValue(initialPosition);
+    const initialPosition = snake2.getCurrentParts[0];
 
-    player2.makeTurn = jest.fn();
+    player2.makeTurn = jest.fn().mockImplementation(() => {
+      // Simulate a move by updating the world model
+      worldModel.updateSteps(1);
+    });
+
     gameController.run();
 
     jest.advanceTimersByTime(300);
 
     expect(player2.makeTurn).toHaveBeenCalled();
 
-    const updatedPosition = snakeController2.snakePosition;
+    const updatedPosition = snake2.getCurrentParts[0];
     expect(updatedPosition).not.toEqual(initialPosition);
   });
 
@@ -147,13 +150,16 @@ describe("GameController", () => {
       .mockReturnValue(boundaryPosition);
     jest.spyOn(snakeController2, "snakeDirection", "get").mockReturnValue(1);
 
-    player2.makeTurn = jest.fn();
-    snakeController2.turnSnakeRight = jest.fn();
+    player2.makeTurn = jest.fn().mockImplementation(() => {
+      snakeController2.turnSnakeRight = jest.fn();
+      snakeController2.turnSnakeRight();
+    });
+
     gameController.run();
 
     jest.advanceTimersByTime(300);
-    console.log(snakeController2.snakePosition);
-    console.log(snakeController2.snakeDirection);
+
     expect(player2.makeTurn).toHaveBeenCalled();
+    expect(snakeController2.turnSnakeRight).toHaveBeenCalled();
   });
 });

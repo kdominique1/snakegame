@@ -2,6 +2,7 @@ import AvoidWallsPlayer from "../src/AvoidWallsPlayer";
 import SnakeController from "../src/SnakeController";
 import Snake from "../src/Snake";
 import WorldModel from "../src/WorldModel";
+import ActorCollisionHandlers from "../src/ActorCollisionHandlers";
 import Point from "../src/Point";
 
 describe("AvoidWallsPlayer", () => {
@@ -12,8 +13,9 @@ describe("AvoidWallsPlayer", () => {
 
   beforeEach(() => {
     mockSnake = new Snake(new Point(50, 50), 3);
-    mockWorld = new WorldModel();
-    mockWorld.addSnake(mockSnake);
+    const mockCollisionHandlers = new ActorCollisionHandlers();
+    mockWorld = new WorldModel(100, 100, mockCollisionHandlers);
+    mockWorld.addActor(mockSnake);
     sc = new SnakeController(mockWorld, mockSnake);
     player = new AvoidWallsPlayer(sc);
 
@@ -81,13 +83,9 @@ describe("AvoidWallsPlayer", () => {
     expect(sc.turnSnakeRight).toHaveBeenCalled();
   });
 
-  // Double check this test
   it("should turn right when snake is moving right and hits the top-right corner", () => {
-    console.log("Snake's current direction is " + sc.snakeDirection);
     jest.spyOn(sc, "snakeDirection", "get").mockReturnValue(1);
     jest.spyOn(sc, "snakePosition", "get").mockReturnValue(new Point(100, 0));
-    mockSnake.turnRight = jest.fn();
-    sc.turnSnakeRight = jest.fn();
     player.makeTurn();
     expect(sc.turnSnakeRight).toHaveBeenCalled();
   });

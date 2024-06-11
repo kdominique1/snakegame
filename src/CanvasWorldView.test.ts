@@ -2,6 +2,7 @@ import CanvasWorldView from "../src/CanvasWorldView";
 import WorldModel from "../src/WorldModel";
 import Snake from "../src/Snake";
 import Point from "../src/Point";
+import ActorCollisionHandlers from "../src/ActorCollisionHandlers";
 
 describe("CanvasWorldView", () => {
   let canvasWorldView: CanvasWorldView;
@@ -11,10 +12,17 @@ describe("CanvasWorldView", () => {
 
   beforeEach(() => {
     snake = new Snake(new Point(0, 0), 3);
-    worldModel = new WorldModel();
-    worldModel.addSnake(snake);
+    const mockCollisionHandlers = new ActorCollisionHandlers();
+    worldModel = new WorldModel(100, 100, mockCollisionHandlers);
+    worldModel.addActor(snake);
     canvasWorldView = new CanvasWorldView(scalingFactor);
     worldModel.addView(canvasWorldView);
+
+    // Mock the getContext method to return a fake context
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    jest.spyOn(document, "getElementById").mockReturnValue(canvas);
+    jest.spyOn(canvas, "getContext").mockReturnValue(context);
   });
 
   it("should correctly set canvas dimensions based on world model dimensions and scaling factor", () => {
