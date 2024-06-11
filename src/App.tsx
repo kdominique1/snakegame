@@ -11,6 +11,9 @@ import IInputHandler from "./IInputHandler";
 import LRKeyInputHandler from "./LRKeyInputHandler";
 import AvoidWallsPlayer from "./AvoidWallsPlayer";
 import Point from "./Point";
+import ActorCollisionHandlers from "./ActorCollisionHandlers";
+import SnakeCollisionFoodHandler from "./SnakeCollisionFoodHandler";
+import SnakeSnakeCollisionHandler from "./SnakeSnakeCollisionHandler";
 
 export default function App() {
   useEffect(() => {
@@ -18,7 +21,20 @@ export default function App() {
 
     const greenSnake = new Snake(new Point(0, 0), 5);
     const brownSnake = new Snake(new Point(7, 7), 5);
-    const worldModel = new WorldModel();
+
+    const collisionHandlers = new ActorCollisionHandlers();
+    collisionHandlers.addCollisionAction(
+      "snake",
+      "food",
+      new SnakeCollisionFoodHandler(),
+    );
+    collisionHandlers.addCollisionAction(
+      "snake",
+      "snake",
+      new SnakeSnakeCollisionHandler(),
+    );
+
+    const worldModel = new WorldModel(100, 100, collisionHandlers);
     worldModel.addSnake(greenSnake);
     worldModel.addSnake(brownSnake);
 

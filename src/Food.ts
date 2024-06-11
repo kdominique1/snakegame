@@ -16,6 +16,12 @@ class Food implements IActor {
 
   update() {}
 
+  move(steps: number) {}
+
+  didCollide(other: IActor): boolean {
+    return this.currentPosition.equals(other.position);
+  }
+
   public get position() {
     return this.currentPosition;
   }

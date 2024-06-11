@@ -1,55 +1,59 @@
 import Snake from "./Snake";
+import IActor from "./IActor";
 import IWorldView from "./IWorldView";
+import ActorCollisionHandlers from "./ActorCollisionHandlers";
+import ArrayIterator from "./ArrayIterator";
 
 /** Class representing a world model. */
 class WorldModel {
   private width_: number;
   private height_: number;
-  private allSnakes: Snake[];
+  private actors_: IActor[];
   private allViews: IWorldView[];
+  private actorCollisionHandlers: ActorCollisionHandlers;
 
   /**
     Creates a new world model.
     */
-  constructor() {
-    this.width_ = 100;
-    this.height_ = 100;
-    this.allSnakes = [];
+  constructor(width: number, height: number, aca: ActorCollisionHandlers) {
+    this.width_ = width;
+    this.height_ = height;
+    this.actors_ = [];
     this.allViews = [];
+    this.actorCollisionHandlers = aca;
   }
 
   /** 
-    Updates the steps for all snakes using the move method of the snake class.
-    @param steps - The number of steps for the snakes to move.
+    Updates the steps for all actors using the move method of the actor class.
+    @param steps - The number of steps for the actors to move.
   */
   updateSteps(steps: number) {
-    this.allSnakes.forEach((snake) => snake.move(steps));
+    this.actors_.forEach((actor) => actor.move(steps));
 
-    // Double check this. The snake disappears after hitting the top right corner,
-    // doesn't show at all when going down the right side or left on the bottom side,
-    // then it reappears when going up the left side and correctly turns at the top
-    // left corner
-    // Most likely, the snakes are still going but they're going off the grid so it
-    // doesn't show it
-    const collidedSnakes: Snake[] = [];
+    const collidedActors: IActor[] = [];
 
-    for (let i = 0; i < this.allSnakes.length; i++) {
-      for (let j = i + 1; j < this.allSnakes.length; j++) {
-        if (this.allSnakes[i].didCollide(this.allSnakes[j])) {
-          if (!collidedSnakes.includes(this.allSnakes[i])) {
-            collidedSnakes.push(this.allSnakes[i]);
+    for (let i = 0; i < this.actors_.length; i++) {
+      for (let j = i + 1; j < this.actors_.length; j++) {
+        if (this.actors_[i].didCollide(this.actors_[j])) {
+          this.actorCollisionHandlers.applyCollisionAction(
+            this.actors_[i],
+            this.actors_[j],
+          );
+
+          if (!collidedActors.includes(this.actors_[i])) {
+            collidedActors.push(this.actors_[i]);
           }
-          if (!collidedSnakes.includes(this.allSnakes[j])) {
-            collidedSnakes.push(this.allSnakes[j]);
+          if (!collidedActors.includes(this.actors_[j])) {
+            collidedActors.push(this.actors_[j]);
           }
         }
       }
     }
 
-    collidedSnakes.forEach((snake) => {
-      const index = this.allSnakes.indexOf(snake);
+    collidedActors.forEach((actor) => {
+      const index = this.actors_.indexOf(actor);
       if (index !== -1) {
-        this.allSnakes.splice(index, 1);
+        this.actors_.splice(index, 1);
       }
     });
 
@@ -57,10 +61,14 @@ class WorldModel {
   }
 
   /** 
-    Returns all snakes in the world model.
+    Returns all actors in the world model.
   */
-  public get snakes(): Snake[] {
-    return this.allSnakes;
+  public get actors(): Generator<IActor> {
+    return (function* (actors: IActor[]) {
+      for (let actor of actors) {
+        yield actor;
+      }
+    })(this.actors_);
   }
 
   /** 
@@ -78,11 +86,11 @@ class WorldModel {
   }
 
   /**
-   * Adds a snake to the world model.
-   * @param s - The Snake instance to add.
+   * Adds an actor to the world model.
+   * @param s - The actor instance to add.
    */
-  public addSnake(s: Snake) {
-    this.allSnakes.push(s);
+  public addActor(s: IActor) {
+    this.actors_.push(s);
   }
 
   /**
