@@ -1,13 +1,12 @@
 import Point from "./Point";
 import IActor from "./IActor";
-import Food from "./Food";
 import ICollidable from "./ICollidable";
 
 /** Class representing a snake. */
 class Snake implements ICollidable {
   private currentParts: Point[];
   private currentDirection: number;
-  private size: number;
+  private _size: number;
   private isCurrentlyActive: boolean;
 
   /**
@@ -17,7 +16,7 @@ class Snake implements ICollidable {
    */
   constructor(startPosition: Point, size: number) {
     this.currentParts = [startPosition];
-    this.size = size;
+    this._size = size;
     this.currentDirection = 1; // Start facing right
     this.isCurrentlyActive = true;
     for (let i = 1; i < size; i++) {
@@ -129,6 +128,11 @@ class Snake implements ICollidable {
     return this.currentParts;
   }
 
+  // Getter to use for tests
+  public get size(): number {
+    return this._size;
+  }
+
   /**
    * Checks if the snake collides with itself or another snake.
    * @param s - Another snake to check for collision.
@@ -171,6 +175,7 @@ class Snake implements ICollidable {
     }
 
     this.currentParts.push(newPart);
+    this._size++;
   }
 
   update(steps: number) {

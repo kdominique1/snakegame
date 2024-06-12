@@ -47,26 +47,21 @@ describe("Snake Class Tests", () => {
   test("Snake moves correctly in current direction", () => {
     const snake = new Snake(new Point(0, 0), 3);
 
-    // Move right
     snake.move(2);
     expect(snake.position.toString()).toBe("2,0");
 
-    // Turn down and move
     snake.turnRight();
     snake.move(2);
     expect(snake.position.toString()).toBe("2,2");
 
-    // Turn left and move (should now be facing right)
     snake.turnLeft();
     snake.move(2);
     expect(snake.position.toString()).toBe("4,2");
 
-    // Turn up and move
     snake.turnLeft();
     snake.move(2);
     expect(snake.position.toString()).toBe("4,0");
 
-    // Turn left and move (should now be facing left)
     snake.turnLeft();
     snake.move(2);
     expect(snake.position.toString()).toBe("2,0");
@@ -113,5 +108,57 @@ describe("Snake Class Tests", () => {
     snake.move(1);
 
     expect(snake.didCollide(snake)).toBe(true);
+  });
+
+  test("Snake grows correctly", () => {
+    const snake = new Snake(new Point(0, 0), 3);
+    expect(snake.size).toBe(3);
+
+    snake.grow();
+    expect(snake.size).toBe(4);
+    expect(snake.getCurrentParts.length).toBe(4);
+  });
+
+  test("Snake doesn't collide with itself initially", () => {
+    const snake = new Snake(new Point(0, 0), 3);
+    expect(snake.didCollide(snake)).toBe(false);
+  });
+
+  test("Snake moves multiple steps correctly", () => {
+    const snake = new Snake(new Point(0, 0), 3);
+    snake.move(3);
+    expect(snake.position.toString()).toBe("3,0");
+
+    snake.turnRight();
+    snake.move(2);
+    expect(snake.position.toString()).toBe("3,2");
+  });
+
+  test("Snake dies correctly", () => {
+    const snake = new Snake(new Point(0, 0), 3);
+    expect(snake.isActive).toBe(true);
+
+    snake.die();
+    expect(snake.isActive).toBe(false);
+  });
+
+  test("Snake turns correctly and moves accordingly", () => {
+    const snake = new Snake(new Point(0, 0), 3);
+
+    snake.turnLeft();
+    snake.move(2);
+    expect(snake.position.toString()).toBe("0,-2");
+
+    snake.turnLeft();
+    snake.move(2);
+    expect(snake.position.toString()).toBe("-2,-2");
+
+    snake.turnLeft();
+    snake.move(2);
+    expect(snake.position.toString()).toBe("-2,0");
+
+    snake.turnLeft();
+    snake.move(2);
+    expect(snake.position.toString()).toBe("0,0");
   });
 });
