@@ -2,6 +2,7 @@ import IActor from "./IActor";
 import ICollisionHandler from "./ICollisionHandler";
 import SnakeCollisionFoodHandler from "./SnakeCollisionFoodHandler";
 import SnakeSnakeCollisionHandler from "./SnakeSnakeCollisionHandler";
+import Snake from "./Snake";
 
 class ActorCollisionHandlers {
   private pairs: Map<string, ICollisionHandler>;

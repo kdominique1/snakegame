@@ -1,6 +1,7 @@
+import IActor from "./IActor";
+import ICollisionHandler from "./ICollisionHandler";
 import Snake from "./Snake";
 import Food from "./Food";
-import ICollisionHandler from "./ICollisionHandler";
 
 class SnakeCollisionFoodHandler implements ICollisionHandler {
   applyAction(snake: Snake, food: Food) {

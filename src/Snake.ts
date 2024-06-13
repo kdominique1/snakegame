@@ -152,13 +152,13 @@ class Snake implements ICollidable {
     const selfCollision = this.currentParts
       .slice(1)
       .some((part) => part.equals(head));
-    console.log("Self Collision Check: ", selfCollision);
+    //console.log("Self Collision Check: ", selfCollision);
 
     // Check collision with other snakes
     let otherCollision = false;
     if (s !== this) {
       otherCollision = s.currentParts.some((part) => part.equals(head));
-      console.log("Other Snake Collision Check: ", otherCollision);
+      //console.log("Other Snake Collision Check: ", otherCollision);
     }
 
     return selfCollision || otherCollision;
@@ -166,16 +166,16 @@ class Snake implements ICollidable {
 
   logSnakePositions(snakeParts: Point[]): void {
     if (snakeParts.length === 0) {
-      console.log("The snake has no parts.");
+      //console.log("The snake has no parts.");
       return;
     }
 
     const head = snakeParts[0];
-    console.log("Head position:", head);
+    //console.log("Head position:", head);
 
-    console.log("Positions of subsequent parts:");
+    //console.log("Positions of subsequent parts:");
     snakeParts.slice(1).forEach((part, index) => {
-      console.log(`Part ${index + 1}:`, part);
+      //console.log(`Part ${index + 1}:`, part);
     });
   }
 

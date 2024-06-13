@@ -1,9 +1,10 @@
-import Snake from "./Snake";
+import IActor from "./IActor";
 import ICollisionHandler from "./ICollisionHandler";
+import Snake from "./Snake";
 
 class SnakeSnakeCollisionHandler implements ICollisionHandler {
-  applyAction(s1: Snake, s2: Snake) {
-    s1.die();
+  applyAction(snake1: Snake, snake2: Snake) {
+    snake1.die();
   }
 }
 
