@@ -139,18 +139,44 @@ class Snake implements ICollidable {
    * @returns True if the snake collides with itself or another snake, otherwise false.
    */
   didCollide(s: Snake | IActor): boolean {
-    // Collision with other objects
+    const head = this.currentParts[0];
+
+    // Check collision with other objects
     if (!(s instanceof Snake)) {
-      return s.position.equals(this.position);
-      // Collision with itself
-    } else if (
-      this.currentParts.slice(1).some((part) => part.equals(this.position))
-    ) {
-      return true;
-      // Collision with other snakes
-    } else {
-      return s.currentParts.some((part) => part.equals(this.position));
+      const collisionWithActor = s.position.equals(head);
+      console.log("Collision with Actor: ", collisionWithActor);
+      return collisionWithActor;
     }
+
+    // Check self-collision
+    const selfCollision = this.currentParts
+      .slice(1)
+      .some((part) => part.equals(head));
+    console.log("Self Collision Check: ", selfCollision);
+
+    // Check collision with other snakes
+    let otherCollision = false;
+    if (s !== this) {
+      otherCollision = s.currentParts.some((part) => part.equals(head));
+      console.log("Other Snake Collision Check: ", otherCollision);
+    }
+
+    return selfCollision || otherCollision;
+  }
+
+  logSnakePositions(snakeParts: Point[]): void {
+    if (snakeParts.length === 0) {
+      console.log("The snake has no parts.");
+      return;
+    }
+
+    const head = snakeParts[0];
+    console.log("Head position:", head);
+
+    console.log("Positions of subsequent parts:");
+    snakeParts.slice(1).forEach((part, index) => {
+      console.log(`Part ${index + 1}:`, part);
+    });
   }
 
   /**
@@ -192,6 +218,10 @@ class Snake implements ICollidable {
 
   public get type() {
     return "snake";
+  }
+
+  public get parts() {
+    return this.currentParts;
   }
 }
 

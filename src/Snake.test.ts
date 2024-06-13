@@ -97,17 +97,27 @@ describe("Snake Class Tests", () => {
   });
 
   test("Snake self-collision detection", () => {
-    const snake = new Snake(new Point(0, 0), 3);
-    snake.move(1);
-    snake.move(1);
-    snake.turnRight();
-    snake.move(1);
-    snake.turnRight();
-    snake.move(1);
-    snake.turnRight();
-    snake.move(1);
+    const startingPosition = new Point(5, 5);
+    const initialSize = 5;
+    const mySnake = new Snake(startingPosition, initialSize);
+    // Moves right
+    mySnake.move(3);
 
-    expect(snake.didCollide(snake)).toBe(true);
+    // Turns down
+    mySnake.turnRight();
+    mySnake.move(3);
+
+    // Turns left
+    mySnake.turnRight();
+    mySnake.move(3);
+
+    // Turns up
+    mySnake.turnRight();
+    mySnake.move(3);
+
+    mySnake.logSnakePositions(mySnake.parts); // Head should collide with fourth part of body
+
+    expect(mySnake.didCollide(mySnake)).toBe(true);
   });
 
   test("Snake grows correctly", () => {
