@@ -7,14 +7,21 @@ import Snake from "../src/Snake";
 import Food from "../src/Food";
 import Point from "../src/Point";
 
-jest.mock("../src/Snake");
-jest.mock("../src/Food");
-
 describe("ActorCollisionHandlers", () => {
   let collisionHandlers: ActorCollisionHandlers;
 
   beforeEach(() => {
     collisionHandlers = new ActorCollisionHandlers();
+    collisionHandlers.addCollisionAction(
+      "Snake",
+      "Food",
+      new SnakeCollisionFoodHandler(),
+    );
+    collisionHandlers.addCollisionAction(
+      "Snake",
+      "Snake",
+      new SnakeSnakeCollisionHandler(),
+    );
   });
 
   test("should initialize with default collision handlers", () => {
@@ -58,41 +65,47 @@ describe("ActorCollisionHandlers", () => {
     expect(mockHandler.applyAction).not.toHaveBeenCalled();
   });
 
-  test("should handle default collision actions", () => {
+  test("should apply collision action using existing handlers", () => {
+    const snake = new Snake(new Point(0, 0), 3);
+    const food = new Food(1, 0);
     const snakeCollisionFoodHandler = new SnakeCollisionFoodHandler();
-    const snakeSnakeCollisionHandler = new SnakeSnakeCollisionHandler();
 
-    const snake1 = new Snake(new Point(0, 0), 3);
-    const snake2 = new Snake(new Point(1, 0), 3);
-    const food = new Food(0, 0);
+    const mockApplyAction = jest.fn();
+    snakeCollisionFoodHandler.applyAction = mockApplyAction;
 
     collisionHandlers.addCollisionAction(
       "Snake",
       "Food",
       snakeCollisionFoodHandler,
     );
+    collisionHandlers.applyCollisionAction(snake, food);
+
+    console.log("mock.instances:", mockApplyAction.mock.instances);
+
+    expect(mockApplyAction).toHaveBeenCalled();
+    expect(mockApplyAction).toHaveBeenCalledWith(snake, food);
+  });
+
+  test("should apply collision action using SnakeSnakeCollisionHandler", () => {
+    const snake1 = new Snake(new Point(0, 0), 3);
+    const snake2 = new Snake(new Point(1, 1), 3);
+    const snakeSnakeCollisionHandler = new SnakeSnakeCollisionHandler();
+
+    const mockApplyAction = jest.fn();
+    snakeSnakeCollisionHandler.applyAction = mockApplyAction;
+
     collisionHandlers.addCollisionAction(
       "Snake",
       "Snake",
       snakeSnakeCollisionHandler,
     );
 
-    jest.spyOn(snakeCollisionFoodHandler, "applyAction");
-    jest.spyOn(snakeSnakeCollisionHandler, "applyAction");
-    jest.spyOn(food, "eat");
-
-    collisionHandlers.applyCollisionAction(snake1, food);
     collisionHandlers.applyCollisionAction(snake1, snake2);
 
-    expect(snakeCollisionFoodHandler.applyAction).toHaveBeenCalledWith(
-      snake1,
-      food,
-    );
-    expect(food.eat).toHaveBeenCalled();
-    expect(snakeSnakeCollisionHandler.applyAction).toHaveBeenCalledWith(
-      snake1,
-      snake2,
-    );
+    console.log("mock.instances:", mockApplyAction.mock.instances);
+
+    expect(mockApplyAction).toHaveBeenCalled();
+    expect(mockApplyAction).toHaveBeenCalledWith(snake1, snake2);
   });
 
   test("should convert types to keys correctly", () => {

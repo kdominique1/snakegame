@@ -37,11 +37,18 @@ class ActorCollisionHandlers {
     return this.pairs.has(key);
   }
 
-  applyCollisionAction(collider: IActor, collided: IActor): void {
+  applyCollisionAction(
+    collider: IActor | Snake,
+    collided: IActor | Snake,
+  ): void {
     let key = this.toKey(collider.type, collided.type);
+    console.log(`Generated key: ${key}`);
     if (this.pairs.has(key)) {
+      console.log(`Handler found for key: ${key}`);
       let getValue = this.pairs.get(key)!;
       getValue.applyAction(collider, collided);
+    } else {
+      console.log(`No handler found for key: ${key}`);
     }
   }
 }

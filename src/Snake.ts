@@ -217,7 +217,7 @@ class Snake implements ICollidable {
   }
 
   public get type() {
-    return "snake";
+    return "Snake";
   }
 
   public get parts() {

@@ -43,6 +43,6 @@ describe("Food", () => {
   });
 
   test("should return correct type", () => {
-    expect(food.type).toBe("actor");
+    expect(food.type).toBe("Food");
   });
 });

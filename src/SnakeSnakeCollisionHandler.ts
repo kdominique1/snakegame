@@ -6,6 +6,10 @@ class SnakeSnakeCollisionHandler implements ICollisionHandler {
   applyAction(snake1: Snake, snake2: Snake) {
     snake1.die();
   }
+
+  toString(): string {
+    return "SnakeSnakeCollisionHandler";
+  }
 }
 
 export default SnakeSnakeCollisionHandler;

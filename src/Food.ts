@@ -31,7 +31,7 @@ class Food implements IActor {
   }
 
   public get type() {
-    return "actor";
+    return "Food";
   }
 }
 
