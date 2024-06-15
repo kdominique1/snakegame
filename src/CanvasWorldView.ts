@@ -71,6 +71,10 @@ class CanvasWorldView implements IWorldView {
     }
   }
 
+  dispose(): void {
+    document.body.removeChild(this.worldCanvas);
+  }
+
   public get canvasWidth(): number {
     return this.worldCanvas.width;
   }
@@ -81,6 +85,10 @@ class CanvasWorldView implements IWorldView {
 
   public get canvasContext(): CanvasRenderingContext2D {
     return this.context;
+  }
+
+  public get canvas(): HTMLCanvasElement {
+    return this.worldCanvas;
   }
 }
 

@@ -7,6 +7,11 @@ interface IWorldView {
    * @param worldModel - The world model to display.
    */
   display(worldModel: WorldModel): void;
+
+  /**
+   * Disposes of resources or performs cleanup tasks.
+   */
+  dispose(): void;
 }
 
 export default IWorldView;

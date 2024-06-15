@@ -2,6 +2,7 @@ import Snake from "./Snake";
 import IActor from "./IActor";
 import IWorldView from "./IWorldView";
 import ActorCollisionHandlers from "./ActorCollisionHandlers";
+import Food from "./Food"; // Ensure you have a Food class
 import ArrayIterator from "./ArrayIterator";
 
 /** Class representing a world model. */
@@ -13,8 +14,8 @@ class WorldModel {
   private actorCollisionHandlers: ActorCollisionHandlers;
 
   /**
-    Creates a new world model.
-    */
+   * Creates a new world model.
+   */
   constructor(width: number, height: number, aca: ActorCollisionHandlers) {
     this.width_ = width;
     this.height_ = height;
@@ -23,10 +24,10 @@ class WorldModel {
     this.actorCollisionHandlers = aca;
   }
 
-  /** 
-    Updates the steps for all actors using the move method of the actor class.
-    @param steps - The number of steps for the actors to move.
-  */
+  /**
+   * Updates the steps for all actors using the move method of the actor class.
+   * @param steps - The number of steps for the actors to move.
+   */
   updateSteps(steps: number) {
     this.actors_.forEach((actor) => actor.move(steps));
 
@@ -57,12 +58,20 @@ class WorldModel {
       }
     });
 
+    // Check if there's no food left and add a new Food actor if necessary
+    const foodActors = this.actors_.filter((actor) => actor.type === "food");
+    if (foodActors.length === 0) {
+      const randomX = Math.floor(this.width_ * Math.random());
+      const randomY = Math.floor(this.height_ * Math.random());
+      this.addActor(new Food(randomX, randomY));
+    }
+
     this.allViews.forEach((view) => view.display(this));
   }
 
-  /** 
-    Returns all actors in the world model.
-  */
+  /**
+   * Returns all actors in the world model.
+   */
   public get actors(): Generator<IActor> {
     return (function* (actors: IActor[]) {
       for (let actor of actors) {
@@ -71,16 +80,16 @@ class WorldModel {
     })(this.actors_);
   }
 
-  /** 
-    Returns the width of the world model.
-  */
+  /**
+   * Returns the width of the world model.
+   */
   public get width(): number {
     return this.width_;
   }
 
-  /** 
-    Returns the height of the world model.
-  */
+  /**
+   * Returns the height of the world model.
+   */
   public get height(): number {
     return this.height_;
   }

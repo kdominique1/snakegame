@@ -43,6 +43,12 @@ describe("CanvasWorldView", () => {
     );
   });
 
+  it("should remove the canvas element from the body on dispose", () => {
+    const removeChildSpy = jest.spyOn(document.body, "removeChild");
+    canvasWorldView.dispose();
+    expect(removeChildSpy).toHaveBeenCalledWith(canvasWorldView.canvas);
+  });
+
   it("should draw each part of the snake at the correct positions", () => {
     snake.move(5);
     const fillRectSpy = jest.spyOn(canvasWorldView.canvasContext, "fillRect");

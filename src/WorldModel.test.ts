@@ -10,6 +10,8 @@ class MockView implements IWorldView {
   display(worldModel: WorldModel): void {
     this.displayCalled = true;
   }
+
+  dispose(): void {}
 }
 
 const updateNumOfSteps = (
