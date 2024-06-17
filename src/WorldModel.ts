@@ -58,15 +58,17 @@ class WorldModel {
       }
     });
 
-    // Check if there's no food left and add a new Food actor if necessary
-    const foodActors = this.actors_.filter((actor) => actor.type === "food");
-    if (foodActors.length === 0) {
-      const randomX = Math.floor(this.width_ * Math.random());
-      const randomY = Math.floor(this.height_ * Math.random());
-      this.addActor(new Food(randomX, randomY));
-    }
-
     this.allViews.forEach((view) => view.display(this));
+  }
+  /**
+   * Resets the world model to its initial state by disposing of all views
+   * and clearing the lists of actors and views.
+   */
+  public reset() {
+    this.allViews.forEach((view) => view.dispose());
+
+    this.allViews = [];
+    this.actors_ = [];
   }
 
   /**
