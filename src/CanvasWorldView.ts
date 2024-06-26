@@ -16,13 +16,12 @@ class CanvasWorldView implements IWorldView {
   constructor(scalingFactor: number) {
     this.scalingFactor = scalingFactor;
 
-    // Check if the canvas already exists
     this.worldCanvas = document.getElementById(
       "worldCanvas",
     ) as HTMLCanvasElement;
     if (!this.worldCanvas) {
       this.worldCanvas = document.createElement("canvas");
-      this.worldCanvas.id = "worldCanvas"; // Assign an ID to the canvas
+      this.worldCanvas.id = "worldCanvas";
       document.body.appendChild(this.worldCanvas);
     }
 
@@ -37,7 +36,6 @@ class CanvasWorldView implements IWorldView {
     this.worldCanvas.width = worldModel.width * this.scalingFactor;
     this.worldCanvas.height = worldModel.height * this.scalingFactor;
 
-    // Clear the canvas before drawing
     this.context.clearRect(
       0,
       0,
@@ -45,7 +43,6 @@ class CanvasWorldView implements IWorldView {
       this.worldCanvas.height,
     );
 
-    // Set the background to black
     this.context.fillStyle = "black";
     this.context.fillRect(
       0,
@@ -54,11 +51,10 @@ class CanvasWorldView implements IWorldView {
       this.worldCanvas.height,
     );
 
-    // Draw each part of each snake
     const actorsArray = Array.from(worldModel.actors);
     for (const actor of actorsArray) {
       if (actor instanceof Snake) {
-        this.context.fillStyle = "green"; // Set the color of the snake
+        this.context.fillStyle = "green";
         actor.getCurrentParts.forEach((part) => {
           this.context.fillRect(
             part.x * this.scalingFactor,
