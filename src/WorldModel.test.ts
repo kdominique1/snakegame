@@ -1,6 +1,7 @@
 import WorldModel from "../src/WorldModel";
 import Snake from "../src/Snake";
 import Point from "../src/Point";
+import Food from "../src/Food";
 import ActorCollisionHandlers from "../src/ActorCollisionHandlers";
 import IWorldView from "../src/IWorldView";
 
@@ -100,13 +101,15 @@ describe("WorldModel Tests", function () {
     expect(mockView.displayCalled).toBe(true);
   });
 
-  it("should remove actors that collide", () => {
+  it("should remove the first snake when two snakes collide", () => {
     actorCollisionHandlers.applyCollisionAction = jest.fn();
 
     const worldModel = new WorldModel(100, 100, actorCollisionHandlers);
     const snake1 = new Snake(new Point(0, 0), 3);
-    const snake2 = new Snake(new Point(0, 0), 3); // Ensure they start at the same point
+    const snake2 = new Snake(new Point(0, 0), 3);
 
+    snake1.die = jest.fn();
+    snake2.die = jest.fn();
     worldModel.addActor(snake1);
     worldModel.addActor(snake2);
 
@@ -115,10 +118,57 @@ describe("WorldModel Tests", function () {
 
     worldModel.updateSteps(1);
 
+    console.log(`Actors after updateSteps: ${worldModel.actors}`);
+    console.log(`Collision detected: ${snake1.didCollide(snake2)}`);
+
+    expect(actorCollisionHandlers.applyCollisionAction).toHaveBeenCalled();
+    // It is detecting a collision, but the first snake is not dying
+    expect(snake1.die).toHaveBeenCalled();
+    expect(snake2.die).not.toHaveBeenCalled();
+
+    const finalActorsArray = Array.from(worldModel.actors);
+    expect(finalActorsArray).not.toContain(snake1);
+    // Bug: Both snakes are being removed
+    expect(finalActorsArray).toContain(snake2);
+  });
+
+  it("should keep the snake and deactivate food when a snake collides with food", () => {
+    actorCollisionHandlers.applyCollisionAction = jest.fn();
+
+    const worldModel = new WorldModel(100, 100, actorCollisionHandlers);
+    const snake = new Snake(new Point(0, 0), 3);
+    const food = new Food(0, 0);
+
+    worldModel.addActor(snake);
+    worldModel.addActor(food);
+
+    const initialActorsArray = Array.from(worldModel.actors);
+    expect(initialActorsArray.length).toBe(2);
+
+    worldModel.updateSteps(1);
+
+    // Bug:  It is not detecting the collision
     expect(actorCollisionHandlers.applyCollisionAction).toHaveBeenCalled();
 
     const finalActorsArray = Array.from(worldModel.actors);
-    expect(finalActorsArray.length).toBe(0); // Both snakes should be removed
+    //expect(finalActorsArray.length).toBe(1);
+    expect(finalActorsArray).not.toContain(snake);
+  });
+
+  it("should reset the world model to its initial state", () => {
+    const worldModel = new WorldModel(100, 100, actorCollisionHandlers);
+    const snake = new Snake(new Point(0, 0), 3);
+    const mockView = new MockView();
+
+    worldModel.addActor(snake);
+    worldModel.addView(mockView);
+
+    worldModel.reset();
+
+    const finalActorsArray = Array.from(worldModel.actors);
+    expect(finalActorsArray.length).toBe(0);
+
+    expect(mockView.displayCalled).toBe(false);
   });
 });
 

@@ -2,7 +2,7 @@ import Snake from "./Snake";
 import IActor from "./IActor";
 import IWorldView from "./IWorldView";
 import ActorCollisionHandlers from "./ActorCollisionHandlers";
-import Food from "./Food"; // Ensure you have a Food class
+import Food from "./Food";
 import ArrayIterator from "./ArrayIterator";
 
 /** Class representing a world model. */
@@ -58,8 +58,17 @@ class WorldModel {
       }
     });
 
+    const foodActors = this.actors_.filter((actor) => actor instanceof Food);
+    if (foodActors.length === 0) {
+      const x = Math.floor(Math.random() * this.width_);
+      const y = Math.floor(Math.random() * this.height_);
+      const newFood = new Food(x, y);
+      this.addActor(newFood);
+    }
+
     this.allViews.forEach((view) => view.display(this));
   }
+
   /**
    * Resets the world model to its initial state by disposing of all views
    * and clearing the lists of actors and views.
