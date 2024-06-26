@@ -2,6 +2,7 @@ import CanvasWorldView from "../src/CanvasWorldView";
 import WorldModel from "../src/WorldModel";
 import Snake from "../src/Snake";
 import Point from "../src/Point";
+import Food from "./Food";
 import ActorCollisionHandlers from "../src/ActorCollisionHandlers";
 
 describe("CanvasWorldView", () => {
@@ -47,6 +48,29 @@ describe("CanvasWorldView", () => {
     const removeChildSpy = jest.spyOn(document.body, "removeChild");
     canvasWorldView.dispose();
     expect(removeChildSpy).toHaveBeenCalledWith(canvasWorldView.canvas);
+  });
+
+  it("should draw food at the correct position with the correct color", () => {
+    const food = new Food(5, 7);
+    worldModel.addActor(food);
+
+    const fillRectSpy = jest.spyOn(canvasWorldView.canvasContext, "fillRect");
+
+    canvasWorldView.display(worldModel);
+
+    // Check if fillRect was called with the correct coordinates for food
+    expect(fillRectSpy).toHaveBeenCalledWith(
+      5 * scalingFactor,
+      7 * scalingFactor,
+      scalingFactor,
+      scalingFactor,
+    );
+
+    // Check if the fill style was set to red for food (in hexadecimal format)
+    const fillStyle = canvasWorldView.canvasContext.fillStyle;
+    expect(fillStyle).toBe("#ff0000");
+
+    fillRectSpy.mockRestore();
   });
 
   it("should draw each part of the snake at the correct positions", () => {

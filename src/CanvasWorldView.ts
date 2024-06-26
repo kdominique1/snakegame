@@ -2,6 +2,7 @@ import IWorldView from "./IWorldView";
 import WorldModel from "./WorldModel";
 import Snake from "./Snake";
 import IActor from "./IActor";
+import Food from "./Food";
 
 /** Class implementing the IWorldView interface to display the world model on a canvas. */
 class CanvasWorldView implements IWorldView {
@@ -63,6 +64,14 @@ class CanvasWorldView implements IWorldView {
             this.scalingFactor,
           );
         });
+      } else if (actor instanceof Food) {
+        this.context.fillStyle = "red"; // You can change this color as desired
+        this.context.fillRect(
+          actor.position.x * this.scalingFactor,
+          actor.position.y * this.scalingFactor,
+          this.scalingFactor,
+          this.scalingFactor,
+        );
       }
     }
   }
