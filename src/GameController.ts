@@ -1,75 +1,86 @@
 import WorldModel from "./WorldModel";
 import Player from "./Player";
+import Game from "./Game";
+import ActorCollisionHandlers from "./ActorCollisionHandlers";
+import Snake from "./Snake";
+import SnakeController from "./SnakeController";
+import LRKeyInputHandler from "./LRKeyInputHandler";
+import HumanPlayer from "./HumanPlayer";
+import AvoidWallsPlayer from "./AvoidWallsPlayer";
+import WorldLoader from "./WorldLoader";
+import CanvasWorldView from "./CanvasWorldView";
+import Point from "./Point";
+import SnakeSnakeCollisionHandler from "./SnakeSnakeCollisionHandler";
+import SnakeCollisionFoodHandler from "./SnakeCollisionFoodHandler";
 
-/**
- * GameController class is responsible for managing the game loop,
- * updating the world state, and coordinating the players' turns.
- */
 class GameController {
   private world: WorldModel;
-  private _player1: Player;
-  private _player2: Player;
+  private game: Game;
+  private players: Player[] = [];
+  private worldView: CanvasWorldView;
 
-  /**
-   * Creates an instance of GameController.
-   * @param worldModel - An instance of WorldModel representing the game world.
-   */
-  constructor(worldModel: WorldModel) {
-    this.world = worldModel;
-    this._player1 = null!;
-    this._player2 = null!;
+  constructor(g: Game) {
+    this.game = g;
+
+    const collisionHandlers = new ActorCollisionHandlers();
+
+    this.world = new WorldModel(100, 100, collisionHandlers);
+    this.worldView = new CanvasWorldView(100);
+    this.world.addView(this.worldView);
   }
 
-  /**
-   * Sets the first player.
-   * @param firstPlayer - An instance of Player representing the first player.
-   */
-  set player1(firstPlayer: Player) {
-    this._player1 = firstPlayer;
+  init(data: { numOfHumanPlayers: number; numOfAIPlayers: number }) {
+    const totalPlayers = data.numOfHumanPlayers + data.numOfAIPlayers;
+
+    for (let i = 0; i < totalPlayers; i++) {
+      const snake = new Snake(new Point(0, 0), 3);
+      const snakeController = new SnakeController(this.world, snake);
+
+      if (i < data.numOfHumanPlayers) {
+        const keyHandler = new LRKeyInputHandler();
+        this.players.push(new HumanPlayer(snakeController, keyHandler));
+      } else {
+        this.players.push(new AvoidWallsPlayer(snakeController));
+      }
+
+      snake.position = new Point(10 * (i % 5), 10 * Math.floor(i / 5));
+      this.world.addActor(snake);
+    }
+
+    const worldLoader = new WorldLoader();
+    worldLoader.readData(["f", "f", "f"], this.world);
+
+    this.run();
   }
 
-  /**
-   * Gets the first player.
-   * @returns The first player.
-   */
-  get player1(): Player {
-    return this._player1;
-  }
-
-  /**
-   * Sets the second player.
-   * @param secondPlayer - An instance of Player representing the second player.
-   */
-  set player2(secondPlayer: Player) {
-    this._player2 = secondPlayer;
-  }
-
-  /**
-   * Gets the second player.
-   * @returns The second player.
-   */
-  get player2(): Player {
-    return this._player2;
-  }
-
-  /**
-   * Starts the game loop, updates player turns and the world state.
-   */
   run() {
     let lastTime = performance.now();
 
-    const updateFrame = () => {
-      if (this.player1) this.player1.makeTurn();
-      if (this.player2) this.player2.makeTurn();
-      let currentTime = performance.now();
-      let timeSinceLast = currentTime - lastTime;
+    const drawFrame = () => {
+      this.players.forEach((player) => player.makeTurn());
+
+      const currentTime = performance.now();
+      const timeSinceLast = currentTime - lastTime;
+
       if (timeSinceLast > 250) {
         this.world.updateSteps(1);
         lastTime = currentTime;
       }
-      requestAnimationFrame(updateFrame);
+
+      if (this.players.filter((player) => player.isActive()).length > 1) {
+        requestAnimationFrame(drawFrame);
+      } else {
+        this.endGame();
+      }
     };
-    requestAnimationFrame(updateFrame);
+
+    requestAnimationFrame(drawFrame);
+  }
+
+  private endGame() {
+    this.players = [];
+    this.worldView.dispose();
+    this.game.switchContext({});
   }
 }
 

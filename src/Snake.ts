@@ -119,6 +119,10 @@ class Snake implements ICollidable {
     return this.currentParts[0];
   }
 
+  public set position(newPoint: Point) {
+    this.currentParts[0] = newPoint;
+  }
+
   public get direction(): number {
     return this.currentDirection;
   }

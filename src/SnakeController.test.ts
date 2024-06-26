@@ -27,7 +27,6 @@ describe("SnakeController", () => {
   it("should turn the snake left", () => {
     snakeController.turnSnakeLeft();
     expect(slitherer.turnLeft).toHaveBeenCalled();
-    // Bug: Snake controller direction is still the same
     console.log(
       "Snake controller direction after turning left from right is: " +
         snakeController.snakeDirection,
