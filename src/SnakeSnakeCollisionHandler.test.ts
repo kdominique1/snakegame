@@ -19,19 +19,29 @@ describe("SnakeSnakeCollisionHandler", () => {
     jest.clearAllMocks();
   });
 
-  test("should call die method on the first snake", () => {
-    const dieSpy = jest.spyOn(snake1, "die");
+  test("should call die method on both snakes if head-on collision occurs", () => {
+    const dieSpy1 = jest.spyOn(snake1, "die");
+    const dieSpy2 = jest.spyOn(snake2, "die");
+
+    snake1.position = new Point(1, 0);
+    snake2.position = new Point(1, 0);
 
     handler.applyAction(snake1, snake2);
 
-    expect(dieSpy).toHaveBeenCalled();
+    expect(dieSpy1).toHaveBeenCalled();
+    expect(dieSpy2).toHaveBeenCalled();
   });
 
-  test("should not call die method on the second snake", () => {
-    const dieSpy = jest.spyOn(snake2, "die");
+  test("should call die method only on the first snake if non-head-on collision occurs", () => {
+    const dieSpy1 = jest.spyOn(snake1, "die");
+    const dieSpy2 = jest.spyOn(snake2, "die");
+
+    snake1.position = new Point(0, 0);
+    snake2.position = new Point(1, 0);
 
     handler.applyAction(snake1, snake2);
 
-    expect(dieSpy).not.toHaveBeenCalled();
+    expect(dieSpy1).toHaveBeenCalled();
+    expect(dieSpy2).not.toHaveBeenCalled();
   });
 });

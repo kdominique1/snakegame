@@ -101,15 +101,16 @@ describe("WorldModel Tests", function () {
     expect(mockView.displayCalled).toBe(true);
   });
 
-  it("should remove the first snake when two snakes collide", () => {
-    actorCollisionHandlers.applyCollisionAction = jest.fn();
+  it("should remove the first snake when two snakes collide not head on", () => {
+    const spy = jest.spyOn(actorCollisionHandlers, "applyCollisionAction");
 
     const worldModel = new WorldModel(100, 100, actorCollisionHandlers);
     const snake1 = new Snake(new Point(0, 0), 3);
-    const snake2 = new Snake(new Point(0, 0), 3);
+    const snake2 = new Snake(new Point(1, 0), 3);
 
-    snake1.die = jest.fn();
-    snake2.die = jest.fn();
+    const snake1DieSpy = jest.spyOn(snake1, "die");
+    const snake2DieSpy = jest.spyOn(snake2, "die");
+
     worldModel.addActor(snake1);
     worldModel.addActor(snake2);
 
@@ -118,26 +119,60 @@ describe("WorldModel Tests", function () {
 
     worldModel.updateSteps(1);
 
-    console.log(`Actors after updateSteps: ${worldModel.actors}`);
-    console.log(`Collision detected: ${snake1.didCollide(snake2)}`);
-
     expect(actorCollisionHandlers.applyCollisionAction).toHaveBeenCalled();
-    // It is detecting a collision, but the first snake is not dying
-    expect(snake1.die).toHaveBeenCalled();
-    expect(snake2.die).not.toHaveBeenCalled();
+    expect(snake1DieSpy).toHaveBeenCalled();
+
+    expect(snake1DieSpy).toHaveBeenCalled();
+    expect(snake2DieSpy).not.toHaveBeenCalled();
+    expect(snake1.isActive).toEqual(false);
+    expect(snake2.isActive).toEqual(true);
 
     const finalActorsArray = Array.from(worldModel.actors);
     expect(finalActorsArray).not.toContain(snake1);
-    // Bug: Both snakes are being removed
     expect(finalActorsArray).toContain(snake2);
+
+    spy.mockRestore();
+  });
+
+  it("should remove both snakes when two snakes collide head on", () => {
+    const spy = jest.spyOn(actorCollisionHandlers, "applyCollisionAction");
+
+    const worldModel = new WorldModel(100, 100, actorCollisionHandlers);
+    const snake1 = new Snake(new Point(0, 0), 3);
+    const snake2 = new Snake(new Point(4, 0), 3);
+    snake2.direction = -1;
+
+    const snake1DieSpy = jest.spyOn(snake1, "die");
+    const snake2DieSpy = jest.spyOn(snake2, "die");
+
+    worldModel.addActor(snake1);
+    worldModel.addActor(snake2);
+
+    const initialActorsArray = Array.from(worldModel.actors);
+    expect(initialActorsArray.length).toBe(2);
+
+    worldModel.updateSteps(2);
+
+    expect(actorCollisionHandlers.applyCollisionAction).toHaveBeenCalled();
+
+    expect(snake1DieSpy).toHaveBeenCalled();
+    expect(snake2DieSpy).toHaveBeenCalled();
+    expect(snake1.isActive).toEqual(false);
+    expect(snake2.isActive).toEqual(false);
+
+    const finalActorsArray = Array.from(worldModel.actors);
+    expect(finalActorsArray).not.toContain(snake1);
+    expect(finalActorsArray).not.toContain(snake2);
+
+    spy.mockRestore();
   });
 
   it("should keep the snake and deactivate food when a snake collides with food", () => {
-    actorCollisionHandlers.applyCollisionAction = jest.fn();
+    const spy = jest.spyOn(actorCollisionHandlers, "applyCollisionAction");
 
     const worldModel = new WorldModel(100, 100, actorCollisionHandlers);
     const snake = new Snake(new Point(0, 0), 3);
-    const food = new Food(0, 0);
+    const food = new Food(1, 0);
 
     worldModel.addActor(snake);
     worldModel.addActor(food);
@@ -147,12 +182,12 @@ describe("WorldModel Tests", function () {
 
     worldModel.updateSteps(1);
 
-    // Bug:  It is not detecting the collision
     expect(actorCollisionHandlers.applyCollisionAction).toHaveBeenCalled();
 
-    const finalActorsArray = Array.from(worldModel.actors);
-    //expect(finalActorsArray.length).toBe(1);
-    expect(finalActorsArray).not.toContain(snake);
+    expect(food.isActive).toEqual(false);
+    expect(snake.size).toEqual(4);
+
+    spy.mockRestore();
   });
 
   it("should reset the world model to its initial state", () => {

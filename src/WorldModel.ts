@@ -54,9 +54,14 @@ class WorldModel {
     }
 
     collidedActors.forEach((actor) => {
-      const index = this.actors_.indexOf(actor);
-      if (index !== -1) {
-        this.actors_.splice(index, 1);
+      if (
+        (actor instanceof Snake || actor instanceof Food) &&
+        !actor.isActive
+      ) {
+        const index = this.actors_.indexOf(actor);
+        if (index !== -1) {
+          this.actors_.splice(index, 1);
+        }
       }
     });
 

@@ -4,7 +4,12 @@ import Snake from "./Snake";
 
 class SnakeSnakeCollisionHandler implements ICollisionHandler {
   applyAction(snake1: Snake, snake2: Snake) {
-    snake1.die();
+    if (snake1.position.equals(snake2.position)) {
+      snake1.die();
+      snake2.die();
+    } else {
+      snake1.die();
+    }
   }
 
   toString(): string {

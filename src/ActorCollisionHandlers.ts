@@ -41,6 +41,7 @@ class ActorCollisionHandlers {
     collider: IActor | Snake,
     collided: IActor | Snake,
   ): void {
+    console.log("Apply collision action called");
     let key = this.toKey(collider.type, collided.type);
     console.log(`Generated key: ${key}`);
     if (this.pairs.has(key)) {

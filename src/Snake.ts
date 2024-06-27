@@ -127,6 +127,10 @@ class Snake implements ICollidable {
     return this.currentDirection;
   }
 
+  public set direction(newDirection: number) {
+    this.currentDirection = newDirection;
+  }
+
   // Getter to use for tests
   public get getCurrentParts(): Point[] {
     return this.currentParts;
@@ -148,7 +152,7 @@ class Snake implements ICollidable {
     // Check collision with other objects
     if (!(s instanceof Snake)) {
       const collisionWithActor = s.position.equals(head);
-      console.log("Collision with Actor: ", collisionWithActor);
+      //console.log("Collision with Actor: ", collisionWithActor);
       return collisionWithActor;
     }
 
@@ -214,6 +218,7 @@ class Snake implements ICollidable {
 
   die() {
     this.isCurrentlyActive = false;
+    console.log("dead");
   }
 
   public get isActive() {
