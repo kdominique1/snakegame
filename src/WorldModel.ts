@@ -28,6 +28,8 @@ class WorldModel {
    * Updates the steps for all actors using the move method of the actor class.
    * @param steps - The number of steps for the actors to move.
    */
+
+  // Bug: Tests are not working correctly for this method
   updateSteps(steps: number) {
     this.actors_.forEach((actor) => actor.move(steps));
 

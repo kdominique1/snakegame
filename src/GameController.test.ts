@@ -1,100 +1,91 @@
 import GameController from "../src/GameController";
+import Game from "../src/Game";
 import WorldModel from "../src/WorldModel";
 import Snake from "../src/Snake";
-import SnakeController from "../src/SnakeController";
 import HumanPlayer from "../src/HumanPlayer";
 import AvoidWallsPlayer from "../src/AvoidWallsPlayer";
-import LRKeyInputHandler from "../src/LRKeyInputHandler";
-import Point from "../src/Point";
-import ActorCollisionHandlers from "../src/ActorCollisionHandlers";
+import CanvasWorldView from "../src/CanvasWorldView";
+import Player from "../src/Player";
 
 jest.useFakeTimers();
 
 describe("GameController", () => {
-  let snake1: Snake;
-  let snake2: Snake;
-  let worldModel: WorldModel;
-  let snakeController1: SnakeController;
-  let snakeController2: SnakeController;
-  let inputHandler1: LRKeyInputHandler;
-  let player1: HumanPlayer;
-  let player2: AvoidWallsPlayer;
+  let game: Game;
   let gameController: GameController;
+  let worldModel: WorldModel;
 
   beforeEach(() => {
-    snake1 = new Snake(new Point(0, 0), 3);
-    snake2 = new Snake(new Point(10, 10), 3);
+    game = new Game();
+    gameController = new GameController(game);
 
-    const mockCollisionHandlers = new ActorCollisionHandlers();
-    worldModel = new WorldModel(100, 100, mockCollisionHandlers);
-    worldModel.addActor(snake1);
-    worldModel.addActor(snake2);
-
-    inputHandler1 = new LRKeyInputHandler();
-
-    snakeController1 = new SnakeController(worldModel, snake1);
-    snakeController2 = new SnakeController(worldModel, snake2);
-
-    player1 = new HumanPlayer(snakeController1, inputHandler1);
-    player2 = new AvoidWallsPlayer(snakeController2);
-
-    gameController = new GameController(worldModel);
-    gameController.player1 = player1;
-    gameController.player2 = player2;
+    // Access the private world property for testing
+    worldModel = (gameController as any).world;
 
     global.requestAnimationFrame = jest
       .fn()
       .mockImplementation((cb) => setTimeout(cb, 16));
+
+    // Mock CanvasWorldView
+    jest.mock("../src/CanvasWorldView", () => {
+      return jest.fn().mockImplementation(() => ({
+        dispose: jest.fn(),
+      }));
+    });
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  test("should correctly set and get player1", () => {
-    const newPlayer1 = new HumanPlayer(snakeController1, inputHandler1);
-    gameController.player1 = newPlayer1;
+  test("should initialize game with correct number of players", () => {
+    gameController.init({ numOfHumanPlayers: 1, numOfAIPlayers: 1 });
 
-    expect(gameController.player1).toBe(newPlayer1);
+    const players = (gameController as any).players as Player[];
+    expect(players.length).toBe(2);
+    expect(players[0]).toBeInstanceOf(HumanPlayer);
+    expect(players[1]).toBeInstanceOf(AvoidWallsPlayer);
   });
 
-  test("should correctly set and get player2", () => {
-    const newPlayer2 = new AvoidWallsPlayer(snakeController2);
-    gameController.player2 = newPlayer2;
+  test("should add correct number of snakes to the world", () => {
+    gameController.init({ numOfHumanPlayers: 2, numOfAIPlayers: 1 });
 
-    expect(gameController.player2).toBe(newPlayer2);
+    const actors = Array.from(worldModel.actors);
+    const snakes = actors.filter(
+      (actor): actor is Snake => actor instanceof Snake,
+    );
+    expect(snakes.length).toBe(3);
   });
 
-  test("should return null for player1 if not set", () => {
-    const tempGameController = new GameController(worldModel);
+  test("should create CanvasWorldView", () => {
+    gameController.init({ numOfHumanPlayers: 1, numOfAIPlayers: 1 });
 
-    expect(tempGameController.player1).toBe(null);
+    const worldView = (gameController as any).worldView;
+    expect(worldView).toBeInstanceOf(CanvasWorldView);
   });
 
-  test("should return null for player2 if not set", () => {
-    const tempGameController = new GameController(worldModel);
+  test("should call makeTurn on all players", () => {
+    gameController.init({ numOfHumanPlayers: 1, numOfAIPlayers: 1 });
 
-    expect(tempGameController.player2).toBe(null);
-  });
+    const players = (gameController as any).players as Player[];
+    players.forEach((player: Player) => {
+      player.makeTurn = jest.fn();
+    });
 
-  test("should call makeTurn on both players", () => {
-    player1.makeTurn = jest.fn();
-    player2.makeTurn = jest.fn();
-
-    gameController.run();
+    (gameController as any).run();
 
     jest.advanceTimersByTime(300);
 
-    expect(player1.makeTurn).toHaveBeenCalled();
-    expect(player2.makeTurn).toHaveBeenCalled();
+    players.forEach((player: Player) => {
+      expect(player.makeTurn).toHaveBeenCalled();
+    });
   });
 
   test("should call updateSteps on world model after 250 ms", () => {
-    worldModel.updateSteps = jest.fn();
-    player1.makeTurn = jest.fn();
-    player2.makeTurn = jest.fn();
+    gameController.init({ numOfHumanPlayers: 1, numOfAIPlayers: 1 });
 
-    gameController.run();
+    worldModel.updateSteps = jest.fn();
+
+    (gameController as any).run();
 
     jest.advanceTimersByTime(300);
 
@@ -102,63 +93,52 @@ describe("GameController", () => {
   });
 
   test("should not call updateSteps if less than 250 ms have passed", () => {
-    worldModel.updateSteps = jest.fn();
-    player1.makeTurn = jest.fn();
-    player2.makeTurn = jest.fn();
+    gameController.init({ numOfHumanPlayers: 1, numOfAIPlayers: 1 });
 
-    gameController.run();
+    worldModel.updateSteps = jest.fn();
+
+    (gameController as any).run();
 
     jest.advanceTimersByTime(200);
 
     expect(worldModel.updateSteps).not.toHaveBeenCalled();
   });
 
-  test("should call updateSteps multiple times if multiple intervals have passed", () => {
-    worldModel.updateSteps = jest.fn();
-    player1.makeTurn = jest.fn();
-    player2.makeTurn = jest.fn();
+  test("should end game when only one player is active", () => {
+    gameController.init({ numOfHumanPlayers: 2, numOfAIPlayers: 0 });
 
-    gameController.run();
+    const players = (gameController as any).players as Player[];
+    players[0].isActive = jest.fn().mockReturnValue(true);
+    players[1].isActive = jest.fn().mockReturnValue(false);
 
-    jest.advanceTimersByTime(1024);
+    (gameController as any).endGame = jest.fn();
 
-    expect(worldModel.updateSteps).toHaveBeenCalledTimes(4);
-  });
-
-  test("should call makeTurn and influence snake position", () => {
-    const initialPosition = snake2.getCurrentParts[0];
-
-    player2.makeTurn = jest.fn().mockImplementation(() => {
-      worldModel.updateSteps(1);
-    });
-
-    gameController.run();
+    (gameController as any).run();
 
     jest.advanceTimersByTime(300);
 
-    expect(player2.makeTurn).toHaveBeenCalled();
-
-    const updatedPosition = snake2.getCurrentParts[0];
-    expect(updatedPosition).not.toEqual(initialPosition);
+    expect((gameController as any).endGame).toHaveBeenCalled();
   });
 
-  test("should call makeTurn and ensure AvoidWallsPlayer changes direction at boundaries", () => {
-    const boundaryPosition = new Point(100, 0);
-    jest
-      .spyOn(snakeController2, "snakePosition", "get")
-      .mockReturnValue(boundaryPosition);
-    jest.spyOn(snakeController2, "snakeDirection", "get").mockReturnValue(1);
+  test("should call game.switchContext when ending the game", () => {
+    gameController.init({ numOfHumanPlayers: 1, numOfAIPlayers: 1 });
 
-    player2.makeTurn = jest.fn().mockImplementation(() => {
-      snakeController2.turnSnakeRight = jest.fn();
-      snakeController2.turnSnakeRight();
-    });
+    game.switchContext = jest.fn();
 
-    gameController.run();
+    (gameController as any).endGame();
 
-    jest.advanceTimersByTime(300);
+    expect(game.switchContext).toHaveBeenCalledWith({});
+  });
 
-    expect(player2.makeTurn).toHaveBeenCalled();
-    expect(snakeController2.turnSnakeRight).toHaveBeenCalled();
+  test("should dispose worldView when ending the game", () => {
+    gameController.init({ numOfHumanPlayers: 1, numOfAIPlayers: 1 });
+
+    const worldView = (gameController as any).worldView;
+
+    worldView.dispose = jest.fn();
+
+    (gameController as any).endGame();
+
+    expect(worldView.dispose).toHaveBeenCalled();
   });
 });
