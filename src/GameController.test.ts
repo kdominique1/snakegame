@@ -6,6 +6,7 @@ import HumanPlayer from "../src/HumanPlayer";
 import AvoidWallsPlayer from "../src/AvoidWallsPlayer";
 import CanvasWorldView from "../src/CanvasWorldView";
 import Player from "../src/Player";
+import LRKeyInputHandler from "./LRKeyInputHandler";
 
 jest.useFakeTimers();
 
@@ -18,14 +19,12 @@ describe("GameController", () => {
     game = new Game();
     gameController = new GameController(game);
 
-    // Access the private world property for testing
     worldModel = (gameController as any).world;
 
     global.requestAnimationFrame = jest
       .fn()
       .mockImplementation((cb) => setTimeout(cb, 16));
 
-    // Mock CanvasWorldView
     jest.mock("../src/CanvasWorldView", () => {
       return jest.fn().mockImplementation(() => ({
         dispose: jest.fn(),

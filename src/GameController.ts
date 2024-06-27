@@ -18,14 +18,25 @@ class GameController {
   private game: Game;
   private players: Player[] = [];
   private worldView: CanvasWorldView;
+  private keyHandlers: LRKeyInputHandler[] = [];
 
   constructor(g: Game) {
     this.game = g;
 
     const collisionHandlers = new ActorCollisionHandlers();
+    collisionHandlers.addCollisionAction(
+      "snake",
+      "food",
+      new SnakeCollisionFoodHandler(),
+    );
+    collisionHandlers.addCollisionAction(
+      "snake",
+      "snake",
+      new SnakeSnakeCollisionHandler(),
+    );
 
     this.world = new WorldModel(100, 100, collisionHandlers);
-    this.worldView = new CanvasWorldView(100);
+    this.worldView = new CanvasWorldView(15);
     this.world.addView(this.worldView);
   }
 
@@ -38,6 +49,7 @@ class GameController {
 
       if (i < data.numOfHumanPlayers) {
         const keyHandler = new LRKeyInputHandler();
+        this.keyHandlers.push(keyHandler);
         this.players.push(new HumanPlayer(snakeController, keyHandler));
       } else {
         this.players.push(new AvoidWallsPlayer(snakeController));
@@ -50,7 +62,18 @@ class GameController {
     const worldLoader = new WorldLoader();
     worldLoader.readData(["f", "f", "f"], this.world);
 
+    this.setupKeyboardListeners();
     this.run();
+  }
+
+  private setupKeyboardListeners(): void {
+    document.addEventListener("keydown", (event: KeyboardEvent) => {
+      this.keyHandlers.forEach((handler) => {
+        if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+          (handler as any).handleKeydown(event);
+        }
+      });
+    });
   }
 
   run() {

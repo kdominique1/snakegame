@@ -65,7 +65,7 @@ class CanvasWorldView implements IWorldView {
           );
         });
       } else if (actor instanceof Food) {
-        this.context.fillStyle = "red"; // You can change this color as desired
+        this.context.fillStyle = "red";
         this.context.fillRect(
           actor.position.x * this.scalingFactor,
           actor.position.y * this.scalingFactor,
