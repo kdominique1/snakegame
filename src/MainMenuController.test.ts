@@ -69,10 +69,8 @@ describe("MainMenuController", () => {
     );
     mainMenuController.init({});
 
-    const clickEvent = new MouseEvent("click");
-    mainMenuController["playGameButton"].dispatchEvent(clickEvent);
+    mainMenuController["playGameButton"].click();
 
-    // Bug: This is not being called
     expect(switchContextSpy).toHaveBeenCalled();
   });
 

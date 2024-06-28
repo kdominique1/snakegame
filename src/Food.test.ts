@@ -1,4 +1,3 @@
-// Food.test.ts
 import Food from "../src/Food";
 import Point from "../src/Point";
 import IActor from "../src/IActor";

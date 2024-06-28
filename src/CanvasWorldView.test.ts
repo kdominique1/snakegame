@@ -58,7 +58,6 @@ describe("CanvasWorldView", () => {
 
     canvasWorldView.display(worldModel);
 
-    // Check if fillRect was called with the correct coordinates for food
     expect(fillRectSpy).toHaveBeenCalledWith(
       5 * scalingFactor,
       7 * scalingFactor,
@@ -66,7 +65,6 @@ describe("CanvasWorldView", () => {
       scalingFactor,
     );
 
-    // Check if the fill style was set to red for food (in hexadecimal format)
     const fillStyle = canvasWorldView.canvasContext.fillStyle;
     expect(fillStyle).toBe("#ff0000");
 

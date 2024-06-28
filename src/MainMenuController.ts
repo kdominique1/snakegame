@@ -19,10 +19,7 @@ class MainMenuController {
     const buttonText = document.createTextNode("Start Game!");
     this.playGameButton.appendChild(buttonText);
 
-    this.playGameButton.addEventListener(
-      "click",
-      this.switchContext.bind(this),
-    );
+    this.playGameButton.addEventListener("click", () => this.switchContext());
   }
 
   init(data: any): void {

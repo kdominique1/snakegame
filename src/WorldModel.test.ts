@@ -29,7 +29,6 @@ const updateNumOfSteps = (
   for (let i = 0; i < times; i++) {
     const numOfSteps = Math.floor(Math.random() * 100);
 
-    // Move in the current direction
     worldModelOne.updateSteps(numOfSteps);
     if (currentDirection === 1) {
       totalXCoord += numOfSteps;

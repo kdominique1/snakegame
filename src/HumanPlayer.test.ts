@@ -1,4 +1,3 @@
-// HumanPlayer.test.ts
 import SnakeController from "../src/SnakeController";
 import IInputHandler from "../src/IInputHandler";
 import HumanPlayer from "../src/HumanPlayer";

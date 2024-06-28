@@ -9,7 +9,6 @@ class LRKeyInputHandler implements IInputHandler {
     this.wasRightArrowPushed = false;
   }
 
-  // Event listener
   private handleKeydown(event: KeyboardEvent): void {
     if (event.key === "ArrowLeft") {
       this.wasLeftArrowPushed = true;
